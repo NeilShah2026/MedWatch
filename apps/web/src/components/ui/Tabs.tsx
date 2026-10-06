@@ -40,7 +40,7 @@ export function Tabs<K extends string>({
     <div
       role="tablist"
       aria-label={label}
-      className="mb-4 flex gap-1 overflow-x-auto border-b border-line"
+      className="mb-6 flex gap-1 overflow-x-auto border-b border-line"
     >
       {tabs.map((t, i) => {
         const selected = t.key === active;
@@ -58,7 +58,7 @@ export function Tabs<K extends string>({
             tabIndex={selected ? 0 : -1}
             onClick={() => onChange(t.key)}
             onKeyDown={(e) => onKey(e, i)}
-            className={`min-h-touch whitespace-nowrap border-b-4 px-4 font-semibold ${selected ? 'border-primary text-primary' : 'border-transparent text-ink-muted hover:text-ink'}`}
+            className={`-mb-px min-h-touch whitespace-nowrap border-b-[3px] px-4 font-semibold transition-colors ${selected ? 'border-primary text-primary' : 'border-transparent text-ink-muted hover:border-line hover:text-ink'}`}
           >
             {t.label}
           </button>

@@ -55,13 +55,13 @@ export function AlertsBell() {
         aria-haspopup="true"
         aria-label={`${navCopy.alerts}: ${navCopy.alertsUnread(unread.length)}`}
         onClick={() => setOpen((o) => !o)}
-        className="relative inline-flex min-h-touch min-w-touch items-center justify-center rounded-xl text-white hover:bg-white/10"
+        className="relative inline-flex min-h-touch min-w-touch items-center justify-center rounded-xl text-ink-muted transition-colors hover:bg-bg hover:text-ink"
         data-testid="alerts-bell"
       >
         <IconBell />
         {unread.length ? (
           <span
-            className="absolute right-1 top-1 min-w-[1.4rem] rounded-full bg-accent px-1 text-center text-xs font-bold text-ink"
+            className="absolute right-1 top-1 min-w-[1.25rem] rounded-full bg-accent px-1 text-center text-xs font-bold leading-5 text-ink ring-2 ring-surface"
             data-testid="alerts-unread"
           >
             {unread.length}
@@ -69,8 +69,8 @@ export function AlertsBell() {
         ) : null}
       </button>
       {open ? (
-        <div className="absolute right-0 z-40 mt-2 w-[min(92vw,380px)] rounded-2xl border border-line bg-surface p-3 text-ink shadow-xl">
-          <div className="mb-2 flex items-center justify-between">
+        <div className="absolute right-0 z-40 mt-2 w-[min(92vw,380px)] rounded-2xl border border-line bg-surface p-3 text-ink shadow-pop">
+          <div className="mb-2 flex items-center justify-between px-1">
             <h2 className="font-bold">{navCopy.alerts}</h2>
             {unread.length ? (
               <Button variant="ghost" onClick={() => markRead.mutate(unread.map((a) => a.id))}>

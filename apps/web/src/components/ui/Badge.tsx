@@ -17,7 +17,7 @@ export function SeverityBadge({ severity }: { severity: Severity }) {
   const s = SEV[severity];
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-sm font-semibold ${s.cls}`}
+      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-sm font-semibold ${s.cls}`}
       data-severity={severity}
     >
       {s.icon}
@@ -42,7 +42,7 @@ export function Pill({
   };
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-sm font-semibold ${tones[tone]}`}
+      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-sm font-semibold ${tones[tone]}`}
     >
       {children}
     </span>

@@ -7,7 +7,7 @@ export function DemoBanner() {
   return (
     <div
       role="note"
-      className="no-print w-full bg-accent-light px-4 py-2 text-center text-sm font-semibold text-ink"
+      className="no-print w-full bg-accent-light px-4 py-1.5 text-center text-sm font-semibold text-ink"
       data-testid="demo-banner"
     >
       {common.demoBanner}

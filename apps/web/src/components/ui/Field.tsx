@@ -8,7 +8,7 @@ import {
 } from 'react';
 
 const control =
-  'block w-full min-h-touch rounded-xl border border-line bg-surface px-3 py-2 text-ink placeholder:text-ink-muted focus-visible:border-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary/40 aria-[invalid=true]:border-severity-high';
+  'block w-full min-h-touch rounded-xl border border-line bg-surface px-3.5 py-2 text-ink shadow-sm transition-colors placeholder:text-ink-muted hover:border-ink-muted/40 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20 aria-[invalid=true]:border-severity-high';
 
 interface FieldShellProps {
   label: ReactNode;
@@ -21,7 +21,7 @@ interface FieldShellProps {
 
 export function FieldShell({ label, hint, error, id, children }: FieldShellProps) {
   return (
-    <div className="space-y-1">
+    <div className="space-y-1.5">
       <label htmlFor={id} className="block font-semibold">
         {label}
       </label>

@@ -74,13 +74,21 @@ export function TodayDoses({
         const done = list.filter((d) => DONE.has(d.status)).length;
         return (
           <div className="space-y-4">
-            <div className="card flex items-center justify-between" aria-live="polite">
-              <p className="text-lg font-semibold" data-testid="dose-progress">
-                {doseCopy.progress(done, list.length)}
-              </p>
-              <p className="text-ink-muted">
-                {done === list.length ? doseCopy.allDone : doseCopy.remaining(list.length - done)}
-              </p>
+            <div className="card space-y-3" aria-live="polite">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <p className="text-lg font-semibold" data-testid="dose-progress">
+                  {doseCopy.progress(done, list.length)}
+                </p>
+                <p className="text-ink-muted">
+                  {done === list.length ? doseCopy.allDone : doseCopy.remaining(list.length - done)}
+                </p>
+              </div>
+              <div className="h-2 overflow-hidden rounded-full bg-primary-light" aria-hidden="true">
+                <div
+                  className="h-full rounded-full bg-primary transition-[width] duration-500"
+                  style={{ width: `${(done / list.length) * 100}%` }}
+                />
+              </div>
             </div>
             <ul className="space-y-3">
               {list.map((d) => {
@@ -89,21 +97,21 @@ export function TodayDoses({
                 return (
                   <li
                     key={d.id}
-                    className="card flex flex-col gap-3 sm:flex-row sm:items-center"
+                    className="card flex flex-col gap-4 sm:flex-row sm:items-center"
                     data-testid="dose-card"
                   >
-                    <div className="flex flex-1 items-start gap-3">
-                      <span className="mt-1 rounded-full bg-primary-light p-2 text-primary">
+                    <div className="flex flex-1 items-start gap-4">
+                      <span className="mt-0.5 rounded-xl bg-primary-light p-2.5 text-primary">
                         <IconPill />
                       </span>
                       <div>
                         <p className="text-xl font-bold">{med?.name}</p>
                         <p className="text-ink-muted">{med ? formatDose(med) : ''}</p>
-                        <p className="mt-1 flex items-center gap-1">
+                        <p className="mt-2 flex items-center gap-1.5">
                           <IconClock />
                           {doseCopy.dueAt(formatTime(d.scheduled_for, timezone))}
                         </p>
-                        <div className="mt-1 flex flex-wrap items-center gap-2">
+                        <div className="mt-2 flex flex-wrap items-center gap-2">
                           <StatusPill d={d} />
                           {label && d.status !== 'pending' ? (
                             <span className="text-sm text-ink-muted">{label}</span>
@@ -111,10 +119,10 @@ export function TodayDoses({
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-2 sm:w-56">
+                    <div className="flex flex-col gap-2 sm:w-52">
                       {DONE.has(d.status) ? (
                         <Button
-                          variant="ghost"
+                          variant="secondary"
                           block
                           onClick={() => mutate.mutate({ id: d.id, status: 'pending', note: null })}
                           busy={mutate.isPending}

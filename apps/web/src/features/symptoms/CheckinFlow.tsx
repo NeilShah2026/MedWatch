@@ -227,8 +227,18 @@ export function CheckinFlow({
   const progress = step.kind === 'question' ? checkinCopy.stepOf(step.index + 1, total) : null;
 
   return (
-    <div className="card mx-auto max-w-xl space-y-5" data-testid="checkin-flow">
-      {progress ? <p className="text-sm font-semibold text-ink-muted">{progress}</p> : null}
+    <div className="card space-y-6 sm:p-8" data-testid="checkin-flow">
+      {progress && step.kind === 'question' ? (
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-ink-muted">{progress}</p>
+          <div className="h-1.5 overflow-hidden rounded-full bg-primary-light" aria-hidden="true">
+            <div
+              className="h-full rounded-full bg-primary transition-[width] duration-300"
+              style={{ width: `${((step.index + 1) / total) * 100}%` }}
+            />
+          </div>
+        </div>
+      ) : null}
 
       {step.kind === 'feeling' ? (
         <>
@@ -252,7 +262,7 @@ export function CheckinFlow({
                   setFeeling(i + 1);
                   goQuestion(0);
                 }}
-                className={`flex min-h-[96px] flex-col items-center justify-center gap-1 rounded-xl border-2 p-2 ${feeling === i + 1 ? 'border-primary bg-primary-light' : 'border-line hover:border-primary'}`}
+                className={`flex min-h-[104px] flex-col items-center justify-center gap-1.5 rounded-xl border-2 p-2 transition-colors ${feeling === i + 1 ? 'border-primary bg-primary-light' : 'border-line hover:border-primary/60 hover:bg-bg'}`}
               >
                 <span aria-hidden="true" className="text-4xl">
                   {checkinCopy.feelingFaces[i]}
@@ -374,7 +384,7 @@ export function CheckinFlow({
         </>
       ) : null}
 
-      <div className="flex justify-between">
+      <div className="flex justify-between border-t border-line pt-4">
         <Button
           variant="ghost"
           onClick={() => {

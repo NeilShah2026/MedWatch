@@ -14,6 +14,15 @@
     outline: 3px solid #2f6f73;
     outline-offset: 2px;
   }
+  /* Headings receive programmatic focus (tabIndex -1) for screen readers; no ring needed. */
+  [tabindex='-1']:focus {
+    outline: none;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply tracking-tight;
+  }
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -31,7 +40,11 @@
     font-size: 1.125rem;
   }
   .card {
-    @apply rounded-xl border border-line bg-surface p-4 shadow-sm;
+    @apply rounded-2xl border border-line bg-surface p-5 shadow-card;
+  }
+  /* A table inside a card shouldn't draw a second frame. */
+  .card .table-wrap {
+    @apply rounded-xl shadow-none;
   }
   .sr-only-focusable:not(:focus) {
     @apply sr-only;

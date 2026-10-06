@@ -59,7 +59,7 @@ export function CaseloadPage() {
       >
         <button
           type="button"
-          className="min-h-touch font-semibold underline-offset-2 hover:underline"
+          className="min-h-touch font-semibold uppercase tracking-wide underline-offset-2 hover:text-ink hover:underline"
           aria-label={nurseCopy.sortBy(label)}
           onClick={() =>
             setSort((s) => ({
@@ -104,11 +104,13 @@ export function CaseloadPage() {
                 return (
                   <tr
                     key={r.patient_id}
-                    className={high ? 'bg-[#FCF3F1]' : ''}
+                    className={`transition-colors ${high ? 'bg-[#FCF3F1]' : 'hover:bg-bg/60'}`}
                     data-testid="caseload-row"
                     data-high={high || undefined}
                   >
-                    <td className={`${td} ${high ? 'border-l-4 border-l-severity-high' : ''}`}>
+                    <td
+                      className={`${td} ${high ? 'relative before:absolute before:inset-y-0 before:left-0 before:bg-severity-high before:w-1' : ''}`}
+                    >
                       <Link
                         to={`/clinic/patients/${r.patient_id}`}
                         className="font-semibold text-primary underline"
@@ -119,7 +121,7 @@ export function CaseloadPage() {
                     </td>
                     <td className={td}>{age(r.date_of_birth, timezone)}</td>
                     <td className={td}>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap items-center gap-2">
                         {r.open_high ? (
                           <SeverityBadge severity="high" />
                         ) : r.open_medium ? (

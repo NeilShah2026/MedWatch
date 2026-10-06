@@ -71,85 +71,83 @@ export function TeamPage() {
       />
       <QueryState query={team}>
         {(rows) => (
-          <Card>
-            <Table caption={adminCopy.teamTitle}>
-              <thead>
-                <tr>
-                  <th className={th}>{adminCopy.cols.name}</th>
-                  <th className={th}>{adminCopy.cols.email}</th>
-                  <th className={th}>{adminCopy.cols.role}</th>
-                  <th className={th}>{adminCopy.cols.mfa}</th>
-                  <th className={th}>{adminCopy.cols.active}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((p) => {
-                  const self = p.id === profile.id;
-                  return (
-                    <tr key={p.id} data-testid="team-row">
-                      <td className={td}>
-                        {p.full_name}{' '}
-                        {self ? <span className="text-ink-muted">{adminCopy.you}</span> : null}
-                      </td>
-                      <td className={td}>{p.email}</td>
-                      <td className={td}>
-                        <label className="sr-only" htmlFor={`role-${p.id}`}>
-                          {adminCopy.role}
-                        </label>
-                        <select
-                          id={`role-${p.id}`}
-                          value={p.role}
-                          disabled={self}
+          <Table caption={adminCopy.teamTitle}>
+            <thead>
+              <tr>
+                <th className={th}>{adminCopy.cols.name}</th>
+                <th className={th}>{adminCopy.cols.email}</th>
+                <th className={th}>{adminCopy.cols.role}</th>
+                <th className={th}>{adminCopy.cols.mfa}</th>
+                <th className={th}>{adminCopy.cols.active}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((p) => {
+                const self = p.id === profile.id;
+                return (
+                  <tr key={p.id} data-testid="team-row">
+                    <td className={td}>
+                      {p.full_name}{' '}
+                      {self ? <span className="text-ink-muted">{adminCopy.you}</span> : null}
+                    </td>
+                    <td className={td}>{p.email}</td>
+                    <td className={td}>
+                      <label className="sr-only" htmlFor={`role-${p.id}`}>
+                        {adminCopy.role}
+                      </label>
+                      <select
+                        id={`role-${p.id}`}
+                        value={p.role}
+                        disabled={self}
+                        onChange={(e) =>
+                          update.mutate({ id: p.id, patch: { role: e.target.value as Role } })
+                        }
+                        className="min-h-touch rounded-xl border border-line bg-surface px-2"
+                      >
+                        {ROLES.map((r) => (
+                          <option key={r} value={r}>
+                            {navCopy.role[r]}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className={td}>
+                      {p.role === 'nurse' || p.role === 'agency_admin' ? (
+                        <input
+                          type="checkbox"
+                          aria-label={`${adminCopy.cols.mfa}: ${p.full_name}`}
+                          checked={p.mfa_required}
                           onChange={(e) =>
-                            update.mutate({ id: p.id, patch: { role: e.target.value as Role } })
+                            update.mutate({ id: p.id, patch: { mfa_required: e.target.checked } })
                           }
-                          className="min-h-touch rounded-xl border border-line bg-surface px-2"
-                        >
-                          {ROLES.map((r) => (
-                            <option key={r} value={r}>
-                              {navCopy.role[r]}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td className={td}>
-                        {p.role === 'nurse' || p.role === 'agency_admin' ? (
-                          <input
-                            type="checkbox"
-                            aria-label={`${adminCopy.cols.mfa}: ${p.full_name}`}
-                            checked={p.mfa_required}
-                            onChange={(e) =>
-                              update.mutate({ id: p.id, patch: { mfa_required: e.target.checked } })
+                          className="h-6 w-6 accent-primary"
+                        />
+                      ) : (
+                        '—'
+                      )}
+                    </td>
+                    <td className={td}>
+                      <div className="flex items-center gap-2">
+                        <Pill tone={p.is_active ? 'good' : 'warn'}>
+                          {p.is_active ? adminCopy.activeLabel : adminCopy.inactiveLabel}
+                        </Pill>
+                        {!self ? (
+                          <Button
+                            variant="ghost"
+                            onClick={() =>
+                              update.mutate({ id: p.id, patch: { is_active: !p.is_active } })
                             }
-                            className="h-6 w-6 accent-primary"
-                          />
-                        ) : (
-                          '—'
-                        )}
-                      </td>
-                      <td className={td}>
-                        <div className="flex items-center gap-2">
-                          <Pill tone={p.is_active ? 'good' : 'warn'}>
-                            {p.is_active ? adminCopy.activeLabel : adminCopy.inactiveLabel}
-                          </Pill>
-                          {!self ? (
-                            <Button
-                              variant="ghost"
-                              onClick={() =>
-                                update.mutate({ id: p.id, patch: { is_active: !p.is_active } })
-                              }
-                            >
-                              {p.is_active ? adminCopy.deactivate : adminCopy.activate}
-                            </Button>
-                          ) : null}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </Card>
+                          >
+                            {p.is_active ? adminCopy.deactivate : adminCopy.activate}
+                          </Button>
+                        ) : null}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
         )}
       </QueryState>
       <Card title={adminCopy.pendingInvites}>

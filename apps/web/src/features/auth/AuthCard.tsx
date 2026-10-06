@@ -11,10 +11,10 @@ export function AuthCard({
 }) {
   return (
     <div className="mx-auto w-full max-w-md">
-      <div className="card p-6">
+      <div className="card p-6 sm:p-8">
         <h1 className="text-2xl font-bold">{title}</h1>
-        {subtitle ? <p className="mt-1 text-ink-muted">{subtitle}</p> : null}
-        <div className="mt-6 space-y-4">{children}</div>
+        {subtitle ? <p className="mt-1.5 text-ink-muted">{subtitle}</p> : null}
+        <div className="mt-8 space-y-5">{children}</div>
       </div>
     </div>
   );

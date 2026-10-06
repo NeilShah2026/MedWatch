@@ -28,7 +28,7 @@ import { common } from '@/copy/common';
 import { useMe } from '@/app/AuthProvider';
 import { Button } from '@/components/ui/Button';
 import { CheckboxField, SelectField, TextAreaField, TextField } from '@/components/ui/Field';
-import { Card, PageHeader, Table, td, th } from '@/components/ui/Layout';
+import { PageHeader, Table, td, th } from '@/components/ui/Layout';
 import { Modal } from '@/components/ui/Modal';
 import { Pill } from '@/components/ui/Badge';
 import { QueryState } from '@/components/ui/States';
@@ -387,51 +387,49 @@ export function PatientsPage() {
       />
       <QueryState query={q}>
         {(rows) => (
-          <Card>
-            <Table caption={adminCopy.patientsTitle}>
-              <thead>
-                <tr>
-                  <th className={th}>{adminCopy.cols.name}</th>
-                  <th className={th}>{adminCopy.patientForm.dob}</th>
-                  <th className={th}>{adminCopy.primaryNurse}</th>
-                  <th className={th}>{adminCopy.statusCol}</th>
-                  <th className={th}>
-                    <span className="sr-only">{adminCopy.cols.actions}</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows
-                  .filter((p) => showDischarged || p.status === 'active')
-                  .map((p) => (
-                    <tr key={p.id} data-testid="admin-patient-row">
-                      <td className={td}>
-                        <Link
-                          to={`/clinic/patients/${p.id}`}
-                          className="font-semibold text-primary underline"
-                        >
-                          {fullName(p)}
-                        </Link>
-                      </td>
-                      <td className={td}>
-                        {formatDate(p.date_of_birth)} ({age(p.date_of_birth, timezone)})
-                      </td>
-                      <td className={td}>{nurseName(p.primary_nurse_id) ?? '—'}</td>
-                      <td className={td}>
-                        <Pill tone={p.status === 'active' ? 'good' : 'warn'}>
-                          {adminCopy.status[p.status]}
-                        </Pill>
-                      </td>
-                      <td className={td}>
-                        <Button variant="ghost" onClick={() => setManagingId(p.id)}>
-                          {adminCopy.manage}
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>
-          </Card>
+          <Table caption={adminCopy.patientsTitle}>
+            <thead>
+              <tr>
+                <th className={th}>{adminCopy.cols.name}</th>
+                <th className={th}>{adminCopy.patientForm.dob}</th>
+                <th className={th}>{adminCopy.primaryNurse}</th>
+                <th className={th}>{adminCopy.statusCol}</th>
+                <th className={th}>
+                  <span className="sr-only">{adminCopy.cols.actions}</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows
+                .filter((p) => showDischarged || p.status === 'active')
+                .map((p) => (
+                  <tr key={p.id} data-testid="admin-patient-row">
+                    <td className={td}>
+                      <Link
+                        to={`/clinic/patients/${p.id}`}
+                        className="font-semibold text-primary underline"
+                      >
+                        {fullName(p)}
+                      </Link>
+                    </td>
+                    <td className={td}>
+                      {formatDate(p.date_of_birth)} ({age(p.date_of_birth, timezone)})
+                    </td>
+                    <td className={td}>{nurseName(p.primary_nurse_id) ?? '—'}</td>
+                    <td className={td}>
+                      <Pill tone={p.status === 'active' ? 'good' : 'warn'}>
+                        {adminCopy.status[p.status]}
+                      </Pill>
+                    </td>
+                    <td className={td}>
+                      <Button variant="ghost" onClick={() => setManagingId(p.id)}>
+                        {adminCopy.manage}
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
         )}
       </QueryState>
       <Modal open={adding} onClose={() => setAdding(false)} title={adminCopy.addPatient}>

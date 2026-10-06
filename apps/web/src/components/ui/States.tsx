@@ -23,10 +23,12 @@ export function EmptyState({
 }) {
   return (
     <div
-      className="card flex flex-col items-center gap-2 py-10 text-center"
+      className="card flex flex-col items-center gap-2 py-12 text-center"
       data-testid="empty-state"
     >
-      <IconInfo className="text-primary" />
+      <span className="mb-1 rounded-full bg-primary-light p-3 text-primary">
+        <IconInfo />
+      </span>
       <p className="text-lg font-semibold">{title}</p>
       {body ? <p className="max-w-prose text-ink-muted">{body}</p> : null}
       {action}
@@ -43,8 +45,10 @@ export function ErrorState({
   message?: string;
 }) {
   return (
-    <div role="alert" className="card flex flex-col items-center gap-3 py-8 text-center">
-      <IconAlert className="text-severity-high" />
+    <div role="alert" className="card flex flex-col items-center gap-3 py-10 text-center">
+      <span className="rounded-full bg-sev-highbg p-3 text-severity-high">
+        <IconAlert />
+      </span>
       <p className="font-semibold">{message}</p>
       {onRetry ? (
         <Button variant="secondary" onClick={onRetry}>

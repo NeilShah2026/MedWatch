@@ -36,10 +36,10 @@ export function Modal({
         e.preventDefault();
         if (dismissible) onClose();
       }}
-      className="w-[min(92vw,560px)] rounded-2xl border border-line bg-surface p-0 text-ink shadow-xl backdrop:bg-ink/40"
+      className="w-[min(92vw,560px)] rounded-2xl border border-line bg-surface p-0 text-ink shadow-pop backdrop:bg-ink/40"
     >
       {open ? (
-        <div className="p-5">
+        <div className="p-6">
           <div className="mb-4 flex items-start justify-between gap-4">
             <h2 id="modal-title" className="text-xl font-bold">
               {title}
@@ -56,7 +56,11 @@ export function Modal({
             ) : null}
           </div>
           <div className="space-y-4">{children}</div>
-          {footer ? <div className="mt-6 flex flex-wrap justify-end gap-2">{footer}</div> : null}
+          {footer ? (
+            <div className="-mx-6 -mb-6 mt-6 flex flex-wrap justify-end gap-2 rounded-b-2xl border-t border-line bg-bg/60 px-6 py-4">
+              {footer}
+            </div>
+          ) : null}
         </div>
       ) : null}
     </dialog>

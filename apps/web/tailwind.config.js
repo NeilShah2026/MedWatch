@@ -25,6 +25,10 @@ export default {
       minHeight: { touch: '48px' },
       minWidth: { touch: '48px' },
       borderRadius: { xl: '0.875rem', '2xl': '1.25rem' },
+      boxShadow: {
+        card: '0 1px 2px rgba(43, 43, 43, 0.04), 0 2px 8px -2px rgba(43, 43, 43, 0.06)',
+        pop: '0 12px 32px -8px rgba(43, 43, 43, 0.18), 0 2px 6px rgba(43, 43, 43, 0.06)',
+      },
     },
   },
   plugins: [],

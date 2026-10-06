@@ -6,6 +6,7 @@ export const authCopy = {
   signIn: 'Sign in',
   signingIn: 'Signing in…',
   forgot: 'Forgot your password?',
+  demoTitle: 'Quick demo sign-in',
   signInFailed: 'That email and password did not match. Please try again.',
   timedOut: 'You were signed out after a period of inactivity.',
   signedOut: 'You are now signed out.',

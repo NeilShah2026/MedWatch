@@ -218,7 +218,7 @@ export function FlagCard({
 
   return (
     <article
-      className={`card ${flag.severity === 'high' && flag.status === 'open' ? 'border-l-8 border-l-severity-high' : ''} ${selected ? 'ring-4 ring-accent' : ''}`}
+      className={`card overflow-hidden ${flag.severity === 'high' && flag.status === 'open' ? 'relative before:absolute before:inset-y-0 before:left-0 before:bg-severity-high before:w-1.5' : ''} ${selected ? 'ring-4 ring-accent' : ''}`}
       data-testid="flag-card"
       data-flag-type={flag.flag_type}
       data-severity={flag.severity}
@@ -234,8 +234,8 @@ export function FlagCard({
         </span>
         {patientLabel}
       </div>
-      <h3 className="mt-2 text-lg font-bold">{flag.title}</h3>
-      <p className="mt-1">{flag.explanation}</p>
+      <h3 className="mt-3 text-lg font-bold">{flag.title}</h3>
+      <p className="mt-1 text-ink/90">{flag.explanation}</p>
       {flag.reviewed_at && flag.reviewed_by ? (
         <p className="mt-2 text-sm text-ink-muted">
           {flagCopy.reviewedBy(
@@ -245,7 +245,7 @@ export function FlagCard({
           {flag.review_note ? ` — “${flag.review_note}”` : ''}
         </p>
       ) : null}
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-4 flex flex-wrap gap-2">
         <Button variant="ghost" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
           {open ? <IconChevronDown /> : <IconChevronRight />}
           {open ? flagCopy.hideWhy : flagCopy.why}

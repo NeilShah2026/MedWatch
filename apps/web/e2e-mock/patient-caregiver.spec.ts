@@ -65,6 +65,7 @@ test('caregiver: people, confirm a dose, tabs, forbidden URL', async ({ page }) 
   if (await given.isVisible().catch(() => false)) {
     await given.click();
     await expect(page.getByText('Confirmed by caregiver').first()).toBeVisible();
+    await expect(page.getByText('Saved.', { exact: true })).toHaveCount(0);
   }
   await expectAccessible(page, 'care today');
   for (const tab of ['Check-in', 'Medicines', 'Flags', 'Summary']) {

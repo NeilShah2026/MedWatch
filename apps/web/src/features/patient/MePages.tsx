@@ -38,7 +38,7 @@ function CheckinCta({ patient }: { patient: PatientRow }) {
   return (
     <Link
       to="/me/checkin"
-      className={`flex min-h-touch w-full items-center justify-center rounded-xl px-4 py-3 text-lg font-semibold ${done ? 'border-2 border-primary text-primary' : 'bg-accent text-ink'}`}
+      className={`flex min-h-touch w-full items-center justify-center rounded-2xl px-4 py-4 text-lg font-semibold shadow-card transition ${done ? 'border border-primary/50 bg-surface text-primary hover:bg-primary-light' : 'bg-accent text-ink hover:brightness-95'}`}
     >
       {done ? patientCopy.checkinDoneCta : patientCopy.checkinCta}
     </Link>
@@ -54,7 +54,7 @@ export function MeTodayPage() {
           <CheckinCta patient={p} />
           <TodayDoses patient={p} mode="patient" />
           <section>
-            <h2 className="mb-2 text-xl font-bold">{patientCopy.summaryTitle}</h2>
+            <h2 className="mb-3 text-xl font-bold">{patientCopy.summaryTitle}</h2>
             <LatestSummary patient={p} />
           </section>
         </div>
@@ -67,7 +67,7 @@ export function MeCheckinPage() {
   return (
     <WithSelf>
       {(p) => (
-        <div className="mx-auto max-w-2xl space-y-4">
+        <div className="mx-auto max-w-2xl space-y-6">
           <PageHeader title={checkinCopy.title} subtitle={checkinCopy.intro} />
           <CheckinFlow patient={p} mode="patient" />
         </div>
@@ -80,7 +80,7 @@ export function MeMedicinesPage() {
   return (
     <WithSelf>
       {(p) => (
-        <div className="mx-auto max-w-2xl space-y-4">
+        <div className="mx-auto max-w-2xl space-y-6">
           <PageHeader title={medsCopy.myMedicines} />
           <MedicineList patient={p} />
         </div>
