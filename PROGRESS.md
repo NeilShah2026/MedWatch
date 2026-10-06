@@ -4,9 +4,10 @@ Resume instructions: read this file and `BUILD_SPEC.md`, run `npm run env:write`
 
 ## Status
 
-| Phase       | Status      |
-| ----------- | ----------- |
-| 1. Scaffold | done — typecheck, lint, test (6), build, dev server verified |
+| Phase                  | Status                                                                                                                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Scaffold            | done — typecheck, lint, test (6), build, dev server verified                                                                                                                          |
+| 2. Schema and security | done locally — 6 migrations; 37/37 local Postgres RLS/audit/invitation tests pass (`npm run test:db:local`). Cloud `db:push` + cloud RLS suite (`tests/db/cloud`) pending credentials |
 
 ## Blocked by network
 

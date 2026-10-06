@@ -18,15 +18,15 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 ## Phase 2 — Schema and security
 
-- [ ] Migrations: all Section 5 tables, indexes, `updated_at` triggers
-- [ ] RLS helpers `auth_org_id()`, `auth_role()`, `can_access_patient()` + MFA-aware access
-- [ ] RLS policies on every table; patient/caregiver column restrictions on dose confirmation
-- [ ] Audit triggers; append-only `audit_log`; `log_view` / `log_export` RPCs
-- [ ] Invitations table + `accept_invitation` RPC
-- [ ] Symptom catalog seed (20 symptoms, 4 core)
-- [ ] `pg_cron` / `pg_net` (guarded), cron schedules via Vault secrets
-- [ ] DB/RLS tests: cloud (supabase-js per role) + local Postgres verification harness
-- [ ] `docs/DATA_MODEL.md` with Mermaid ER diagram
+- [x] Migrations: all Section 5 tables, indexes, `updated_at` triggers
+- [x] RLS helpers `auth_org_id()`, `auth_role()`, `can_access_patient()` + MFA-aware access
+- [x] RLS policies on every table; patient/caregiver column restrictions on dose confirmation
+- [x] Audit triggers; append-only `audit_log`; `log_view` / `log_export` RPCs
+- [x] Invitations table + `accept_invitation` RPC
+- [x] Symptom catalog seed (20 symptoms, 4 core)
+- [x] `pg_cron` / `pg_net` (guarded), cron schedules via Vault secrets
+- [x] DB/RLS tests: cloud (supabase-js per role) + local Postgres verification harness
+- [x] `docs/DATA_MODEL.md` with Mermaid ER diagram
 
 ## Phase 3 — Core engines (`packages/core`)
 
