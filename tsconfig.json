@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "allowJs": true,
+    "checkJs": false
+  },
+  "include": [
+    "tests/**/*.ts",
+    "scripts/**/*.ts",
+    "supabase/seed/**/*.ts",
+    "supabase/functions/_shared/**/*.ts",
+    "vitest.config.ts"
+  ],
+  "exclude": ["supabase/functions/_shared/deno/**"]
+}
