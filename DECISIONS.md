@@ -51,3 +51,8 @@ One line of reasoning per ambiguous choice (spec §0.5).
 - **Check-in regeneration is triggered by the web app** after a medication save (`tailor-checkin`, idempotent per fingerprint) plus the nightly sweep; the DB trigger only re-runs the flag engine. Concurrent engine runs are made race-proof by a partial unique index on active `(patient_id, dedupe_key)`.
 - **Stopping a medicine** sets `status='stopped'` and `end_date = effective date − 1` (never before the start date) and records a `stopped` change.
 - **Severity text colors:** the palette's severity colors stay for borders/icons/charts; badge text uses darker shades (`#8C2F25`, `#7A4F12`, `#34567D`) so labels on tinted backgrounds meet WCAG AA (axe flagged the originals).
+- **Job design:** each job is a pure planner (state in → actions out) plus a thin Supabase runner. Idempotency is proven by applying a plan and re-planning (no new actions) and backed by unique constraints (doses, alerts, active flags) whose conflicts are ignored.
+- **`send-alert`:** jobs deliver alerts in-process through the shared `deliverAlerts()`; the `send-alert` endpoint exposes the same logic over HTTP for server callers (cron/pg_net only, never end users).
+- **Alert recipients:** missed-dose alerts go to linked caregivers; escalations go to the primary nurse, caseload nurses and agency admins; flag alerts (≥ org threshold) go to the primary/caseload nurses.
+- **SMS text is fixed and PHI-free** ("a new alert is waiting in the app"); SMS is sent only when the recipient opted in, has a phone number and the patient has an unrevoked SMS consent.
+- **Pending doses of a stopped medicine** are marked `skipped` with note "Medicine stopped" by `check-missed-doses` rather than counted as missed.

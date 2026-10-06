@@ -23,6 +23,11 @@ import {
 } from '../../packages/core/src/index.ts';
 import { MockAiProvider } from '../../supabase/functions/_shared/ai/mock.ts';
 import { tailorCheckin, type TailorStore } from '../../supabase/functions/_shared/tailor/tailor.ts';
+import {
+  planMissedDoses,
+  type CareTeam,
+  type ExistingAlert,
+} from '../../supabase/functions/_shared/jobs/planners.ts';
 import { MockDb, type Row } from './db.ts';
 import { applyFilters, project } from './postgrest.ts';
 import { rpc } from './rpc.ts';
@@ -131,6 +136,60 @@ function runEngine(patientId: string) {
     }
   }
   return drafts.length;
+}
+
+function runMissedDoses() {
+  const org = db.t('organizations')[0]!;
+  const teams = new Map<string, CareTeam>();
+  for (const p of db.t('patients'))
+    teams.set(p.id as string, {
+      caregivers: [],
+      nurses: p.primary_nurse_id ? [p.primary_nurse_id as string] : [],
+    });
+  for (const l of db.t('patient_links'))
+    if (l.relationship === 'caregiver')
+      teams.get(l.patient_id as string)?.caregivers.push(l.profile_id as string);
+  const since = Date.now() - 48 * 36e5;
+  const doses = db
+    .t('dose_events')
+    .filter(
+      (d) =>
+        ['pending', 'missed'].includes(d.status as string) &&
+        Date.parse(d.scheduled_for as string) >= since &&
+        Date.parse(d.scheduled_for as string) <= Date.now(),
+    );
+  const plan = planMissedDoses({
+    doses: doses as unknown as DoseEvent[],
+    medications: db.t('medications') as unknown as Medication[],
+    organizationId: org.id as string,
+    timezone: 'America/New_York',
+    settings: resolveOrgSettings(org.settings),
+    teams,
+    admins: db
+      .t('profiles')
+      .filter((p) => p.role === 'agency_admin')
+      .map((p) => p.id as string),
+    existingAlerts: db
+      .t('alerts')
+      .filter((a) => a.channel === 'in_app') as unknown as ExistingAlert[],
+    now: new Date(),
+  });
+  for (const d of db.t('dose_events')) {
+    if (plan.markMissed.includes(d.id as string)) d.status = 'missed';
+    if (plan.markStopped.includes(d.id as string))
+      Object.assign(d, { status: 'skipped', note: 'Medicine stopped' });
+  }
+  for (const a of plan.alerts)
+    db.t('alerts').push({
+      id: randomUUID(),
+      ...a,
+      channel: 'in_app',
+      delivery_status: 'delivered',
+      sent_at: new Date().toISOString(),
+      read_at: null,
+      created_at: new Date().toISOString(),
+    });
+  return { missed: plan.markMissed.length, alerts: plan.alerts.length };
 }
 
 const store: TailorStore = {
@@ -328,6 +387,34 @@ createServer(async (req, res) => {
     if (url.pathname === '/auth/v1/logout') return send(res, 204);
     if (url.pathname === '/auth/v1/recover') return send(res, 200, {});
     if (url.pathname.startsWith('/auth/v1/')) return send(res, 200, {});
+
+    // Test-only helpers (mock server only).
+    if (url.pathname === '/__test/pending-dose' && req.method === 'POST') {
+      const body = (await readBody(req)) as { patient_id: string; hours_ago: number };
+      const med = db
+        .t('medications')
+        .find((m) => m.patient_id === body.patient_id && m.status === 'active' && !m.prn)!;
+      const id = randomUUID();
+      db.t('dose_events').push({
+        id,
+        organization_id: med.organization_id,
+        patient_id: body.patient_id,
+        medication_id: med.id,
+        scheduled_for: new Date(Date.now() - body.hours_ago * 36e5).toISOString(),
+        status: 'pending',
+        verification: 'reported',
+        note: null,
+        confirmed_at: null,
+        confirmed_by: null,
+        confirmation_method: null,
+      });
+      return send(res, 200, { id });
+    }
+    if (
+      url.pathname === '/functions/v1/check-missed-doses' &&
+      req.headers['x-cron-secret'] === 'mock-cron'
+    )
+      return send(res, 200, runMissedDoses());
 
     const uid = userOf(req);
     if (url.pathname.startsWith('/functions/v1/')) {

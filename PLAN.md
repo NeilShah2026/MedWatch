@@ -75,9 +75,9 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 ## Phase 9 — Jobs and alerts
 
-- [ ] `generate-doses`, `check-missed-doses`, `run-flag-engine`, `send-alert`
-- [ ] SMS provider interface (Console, Twilio)
-- [ ] Idempotency tests; E2E 4
+- [x] `generate-doses`, `check-missed-doses`, `run-flag-engine`, `send-alert`
+- [x] SMS provider interface (Console, Twilio)
+- [x] Idempotency tests; E2E 4
 
 ## Phase 10 — Admin
 
