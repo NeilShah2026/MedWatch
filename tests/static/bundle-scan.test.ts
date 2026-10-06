@@ -41,8 +41,16 @@ let bundle: string;
 beforeAll(() => {
   out = mkdtempSync(join(tmpdir(), 'mw-bundle-'));
   const r = spawnSync(
-    'npx',
-    ['vite', 'build', '--outDir', out, '--emptyOutDir', '--logLevel', 'error'],
+    process.execPath,
+    [
+      join(ROOT, 'node_modules/vite/bin/vite.js'),
+      'build',
+      '--outDir',
+      out,
+      '--emptyOutDir',
+      '--logLevel',
+      'error',
+    ],
     {
       cwd: join(ROOT, 'apps/web'),
       env: {
