@@ -194,12 +194,10 @@ export async function runGenerateDoses(
       new Set(existing.map((e) => `${e.medication_id}|${new Date(e.scheduled_for).toISOString()}`)),
     );
     for (let i = 0; i < drafts.length; i += 500) {
-      const { error } = await db
-        .from('dose_events')
-        .upsert(drafts.slice(i, i + 500), {
-          onConflict: 'medication_id,scheduled_for',
-          ignoreDuplicates: true,
-        });
+      const { error } = await db.from('dose_events').upsert(drafts.slice(i, i + 500), {
+        onConflict: 'medication_id,scheduled_for',
+        ignoreDuplicates: true,
+      });
       if (error) throw new Error('dose_insert_failed');
     }
     created += drafts.length;

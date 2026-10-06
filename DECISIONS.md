@@ -56,3 +56,7 @@ One line of reasoning per ambiguous choice (spec §0.5).
 - **Alert recipients:** missed-dose alerts go to linked caregivers; escalations go to the primary nurse, caseload nurses and agency admins; flag alerts (≥ org threshold) go to the primary/caseload nurses.
 - **SMS text is fixed and PHI-free** ("a new alert is waiting in the app"); SMS is sent only when the recipient opted in, has a phone number and the patient has an unrevoked SMS consent.
 - **Pending doses of a stopped medicine** are marked `skipped` with note "Medicine stopped" by `check-missed-doses` rather than counted as missed.
+- **Adding a client requires a data-use consent** (who gave it, relationship, document version, and a confirmation checkbox); the consent row is written with the patient, and the primary nurse is added to the caseload.
+- **Hard delete** requires typing DELETE; the cascade is audited row by row. **Discharge** is a status change (records kept).
+- **Patient JSON export** pages through every patient table under the admin's RLS and is written to the audit log before the file is produced.
+- **CSV exports** neutralize spreadsheet formulas (leading `= + - @`) and are logged with row counts and date range only.

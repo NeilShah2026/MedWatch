@@ -1,9 +1,7 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom';
-import { navCopy } from '@/copy/nav';
 import { AppLayout, PublicLayout } from './AppLayout';
 import { RequireAuth, RequireRole, RoleHome } from './guards';
 import { NotFoundPage } from './ErrorPages';
-import { Placeholder } from './Placeholder';
 import { SignInPage } from '@/features/auth/SignInPage';
 import { ForgotPasswordPage, ResetPasswordPage } from '@/features/auth/PasswordPages';
 import { MfaChallengePage, MfaSetupPage } from '@/features/auth/MfaPages';
@@ -14,6 +12,12 @@ import { CarePatientPage, PeoplePage } from '@/features/caregiver/CaregiverPages
 import { CaseloadPage } from '@/features/clinic/CaseloadPage';
 import { FlagInboxPage } from '@/features/clinic/FlagInboxPage';
 import { PatientDetailPage } from '@/features/clinic/PatientDetailPage';
+import { DashboardPage } from '@/features/admin/DashboardPage';
+import { PatientsPage } from '@/features/admin/PatientsPage';
+import { TeamPage } from '@/features/admin/TeamPage';
+import { SettingsPage } from '@/features/admin/SettingsPage';
+import { AuditPage } from '@/features/admin/AuditPage';
+import { PilotMetricsPage, PilotReportPage } from '@/features/admin/PilotPages';
 
 const STAFF = ['nurse', 'agency_admin'] as const;
 
@@ -86,7 +90,15 @@ export const router = createBrowserRouter([
             <Outlet />
           </RequireRole>
         ),
-        children: [{ index: true, element: <Placeholder title={navCopy.admin.dashboard} /> }],
+        children: [
+          { index: true, element: <DashboardPage /> },
+          { path: 'patients', element: <PatientsPage /> },
+          { path: 'team', element: <TeamPage /> },
+          { path: 'settings', element: <SettingsPage /> },
+          { path: 'audit', element: <AuditPage /> },
+          { path: 'pilot', element: <PilotMetricsPage /> },
+          { path: 'pilot/report', element: <PilotReportPage /> },
+        ],
       },
     ],
   },

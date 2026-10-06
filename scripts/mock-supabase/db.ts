@@ -226,6 +226,12 @@ export class MockDb {
         schedule_times: out.schedule_times ?? [],
       });
     if (table === 'flags') out.status ??= 'open';
+    if (table === 'patients')
+      Object.assign(out, {
+        status: out.status ?? 'active',
+        last_visit_at: out.last_visit_at ?? null,
+        notes: out.notes ?? null,
+      });
     if (table === 'consents')
       Object.assign(out, { granted_at: out.granted_at ?? now, revoked_at: out.revoked_at ?? null });
     return out;

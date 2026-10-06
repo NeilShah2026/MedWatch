@@ -63,10 +63,33 @@ function cmp(a: unknown, b: unknown): number {
   return String(a) < String(b) ? -1 : 1;
 }
 
-const RESERVED = new Set(['select', 'order', 'limit', 'offset', 'on_conflict', 'columns']);
+const RESERVED = new Set(['select', 'order', 'limit', 'offset', 'on_conflict', 'columns', 'or']);
+
+/** Value of a column or a `col->>key` JSON path. */
+function valueAt(r: Row, key: string): unknown {
+  const m = key.match(/^(\w+)->>(\w+)$/);
+  if (m) {
+    const obj = r[m[1]!] as Record<string, unknown> | null | undefined;
+    return obj ? obj[m[2]!] : undefined;
+  }
+  return r[key];
+}
+
+/** Minimal `or=(a.eq.x,b.eq.y)` support (eq only). */
+function matchesOr(r: Row, expr: string): boolean {
+  return expr
+    .replace(/^\(|\)$/g, '')
+    .split(',')
+    .some((part) => {
+      const [col, op, ...rest] = part.split('.');
+      return op === 'eq' && String(valueAt(r, col!)) === rest.join('.');
+    });
+}
 
 export function applyFilters(rows: Row[], params: URLSearchParams): Row[] {
   let out = rows;
+  const or = params.get('or');
+  if (or) out = out.filter((r) => matchesOr(r, or));
   for (const [key, raw] of params.entries()) {
     if (RESERVED.has(key)) continue;
     const dot = raw.indexOf('.');

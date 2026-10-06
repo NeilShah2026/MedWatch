@@ -131,15 +131,17 @@ export const TextAreaField = forwardRef<HTMLTextAreaElement, TextareaProps>(func
   );
 });
 
-export function CheckboxField({
-  label,
-  hint,
-  ...rest
-}: InputHTMLAttributes<HTMLInputElement> & { label: ReactNode; hint?: ReactNode }) {
+type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & { label: ReactNode; hint?: ReactNode };
+
+export const CheckboxField = forwardRef<HTMLInputElement, CheckboxProps>(function CheckboxField(
+  { label, hint, ...rest },
+  ref,
+) {
   const id = useId();
   return (
     <div className="flex items-start gap-3">
       <input
+        ref={ref}
         id={id}
         type="checkbox"
         className="mt-1 h-6 w-6 rounded border-line accent-primary"
@@ -153,4 +155,4 @@ export function CheckboxField({
       </div>
     </div>
   );
-}
+});

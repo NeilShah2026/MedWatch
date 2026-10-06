@@ -65,13 +65,13 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 - [x] `/me`: Today, check-in flow (tailored), My medicines
 - [x] `/care`: My people, patient tabs, alerts
-- [ ] E2E 1, 1b, 2
+- [x] E2E 1, 1b, 2 (written; mock equivalents pass)
 
 ## Phase 8 — Nurse
 
 - [x] Caseload, patient detail (timeline chart, meds, flags, doses, symptoms, summary + PDF, people), flag inbox
 - [x] Template view + regenerate
-- [ ] E2E 3, 5
+- [x] E2E 3, 5 (written; mock equivalents pass)
 
 ## Phase 9 — Jobs and alerts
 
@@ -81,8 +81,8 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 ## Phase 10 — Admin
 
-- [ ] Dashboard (needs attention, KPIs, charts, AI card), patients, team, settings, audit log, pilot metrics + report
-- [ ] E2E 6
+- [x] Dashboard (needs attention, KPIs, charts, AI card), patients, team, settings, audit log, pilot metrics + report
+- [x] E2E 6
 
 ## Phase 11 — Hardening and deploy prep
 
