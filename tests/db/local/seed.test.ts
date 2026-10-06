@@ -8,7 +8,7 @@ import type pg from 'pg';
 import { PgSeedWriter } from '../../../supabase/seed/writers/pg.ts';
 import { runSeed } from '../../../supabase/seed/run.ts';
 import type { SeedData } from '../../../supabase/seed/generate.ts';
-import { asUser, connect } from './harness';
+import { asUser, connect, expectError } from './harness';
 import {
   getBundledRules,
   resolveOrgSettings,
@@ -126,6 +126,88 @@ describe('demo seed in Postgres', () => {
     expect(await count('select count(*) n from audit_log')).toBeGreaterThan(auditBefore);
     data = again;
   }, 120_000);
+
+  it('reporting RPCs respect RLS and match the seeded stories', async () => {
+    const story = (k: string) => data.stories.find((s) => s.key === k)!.patient_id;
+    const nurseRows = await asUser(
+      db,
+      uid('nurse1@demo.medwatch'),
+      async (q) => (await q('select * from patient_overview()')).rows,
+    );
+    expect(nurseRows).toHaveLength(8);
+    const s1 = nurseRows.find((r) => r.patient_id === story('story1'))!;
+    expect(s1.open_high).toBeGreaterThanOrEqual(2);
+    expect(Number(s1.total_7d)).toBeGreaterThan(0);
+    const cg = await asUser(
+      db,
+      uid('caregiver2@demo.medwatch'),
+      async (q) => (await q('select patient_id from patient_overview()')).rows,
+    );
+    expect(cg.map((r) => r.patient_id).sort()).toEqual([story('story3'), story('story4')].sort());
+
+    const daily = await asUser(
+      db,
+      uid('nurse1@demo.medwatch'),
+      async (q) =>
+        (
+          await q(`select * from adherence_daily($1, org_today() - 29, org_today())`, [
+            story('story2'),
+          ])
+        ).rows,
+    );
+    expect(daily.length).toBeGreaterThanOrEqual(29);
+    const none = await asUser(
+      db,
+      uid('nurse1@demo.medwatch'),
+      async (q) =>
+        (
+          await q(`select * from adherence_daily($1, org_today() - 29, org_today())`, [
+            story('story4'),
+          ])
+        ).rows,
+    );
+    expect(none).toEqual([]); // story 4 is nurse2's patient
+
+    const admin = uid('admin@demo.medwatch');
+    const t0 = Date.now();
+    const [kpis, attention, weekly, trend, ai] = await asUser(db, admin, async (q) => [
+      (await q('select dashboard_kpis() k')).rows[0].k,
+      (await q('select * from needs_attention()')).rows,
+      (await q('select * from flags_weekly(org_today() - 56, org_today())')).rows,
+      (await q('select * from org_adherence_daily(org_today() - 29, org_today())')).rows,
+      (await q('select ai_checkin_stats() s')).rows[0].s,
+    ]);
+    expect(Date.now() - t0).toBeLessThan(2000); // spec §12: dashboard < 2s with seed data
+    expect(kpis.active_patients).toBe(25);
+    expect(kpis.open_flags.high).toBeGreaterThanOrEqual(3);
+    expect(kpis.adherence_7d.rate).toBeGreaterThan(0.8);
+    expect(attention.some((r: { patient_id: string }) => r.patient_id === story('story1'))).toBe(
+      true,
+    );
+    expect(
+      attention.find((r: { patient_id: string }) => r.patient_id === story('story4'))
+        ?.escalations_24h,
+    ).toBeGreaterThanOrEqual(1);
+    expect(weekly.length).toBeGreaterThanOrEqual(8);
+    expect(weekly.reduce((s: number, w: { created: number }) => s + w.created, 0)).toBe(
+      data.tables.flags.length,
+    );
+    expect(trend.length).toBeGreaterThanOrEqual(29);
+    expect(ai.active_templates.rules).toBe(25);
+
+    const pilot = await asUser(
+      db,
+      admin,
+      async (q) => (await q(`select pilot_metrics(org_today() - 30, org_today()) m`)).rows[0].m,
+    );
+    expect(pilot.flags_created).toBeGreaterThan(0);
+    expect(pilot.missed_dose_alerts).toBeGreaterThan(0);
+    await expectError(
+      asUser(db, uid('nurse1@demo.medwatch'), (q) =>
+        q(`select pilot_metrics(org_today() - 30, org_today())`),
+      ),
+    );
+  });
 
   it('plain seed refuses when the demo org already exists', async () => {
     const w = new PgSeedWriter(process.env.LOCAL_PG_URL!);

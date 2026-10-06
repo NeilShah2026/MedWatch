@@ -121,6 +121,55 @@ as $$
   select coalesce(auth.jwt() ->> 'role', '') = 'service_role' or auth.uid() is null
 $$;
 
+
+-- Set-returning forms used by RLS policies. An uncorrelated `x in (select f())` is evaluated
+-- once per statement (hashed), instead of calling a per-row function for every row scanned.
+create or replace function public.accessible_patient_ids()
+returns setof uuid
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select pt.id
+  from public.patients pt
+  where pt.organization_id = public.auth_org_id()
+    and public.mfa_satisfied()
+    and case public.auth_role()
+      when 'agency_admin' then true
+      when 'nurse' then
+        pt.primary_nurse_id = auth.uid()
+        or exists (
+          select 1 from public.caseload_assignments c
+          where c.patient_id = pt.id and c.nurse_id = auth.uid()
+        )
+      when 'caregiver' then exists (
+        select 1 from public.patient_links l
+        where l.patient_id = pt.id and l.profile_id = auth.uid() and l.relationship = 'caregiver'
+      )
+      when 'patient' then exists (
+        select 1 from public.patient_links l
+        where l.patient_id = pt.id and l.profile_id = auth.uid() and l.relationship = 'self'
+      )
+      else false
+    end
+$$;
+
+create or replace function public.manageable_patient_ids()
+returns setof uuid
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select id from public.accessible_patient_ids() as id where public.is_staff()
+$$;
+
+revoke all on function public.accessible_patient_ids() from public, anon;
+revoke all on function public.manageable_patient_ids() from public, anon;
+grant execute on function public.accessible_patient_ids() to authenticated, service_role;
+grant execute on function public.manageable_patient_ids() to authenticated, service_role;
+
 revoke all on function public.can_access_patient(uuid) from public, anon;
 grant execute on function public.can_access_patient(uuid) to authenticated, service_role;
 
@@ -414,126 +463,126 @@ alter table public.invitations enable row level security;
 
 -- organizations ---------------------------------------------------------------
 create policy org_select on public.organizations for select to authenticated
-  using (id = public.auth_org_id());
+  using (id = (select public.auth_org_id()));
 create policy org_update on public.organizations for update to authenticated
-  using (id = public.auth_org_id() and public.is_admin())
-  with check (id = public.auth_org_id() and public.is_admin());
+  using (id = (select public.auth_org_id()) and (select public.is_admin()))
+  with check (id = (select public.auth_org_id()) and (select public.is_admin()));
 
 -- profiles -------------------------------------------------------------------
 -- Everyone sees themselves; staff see their org; patients/caregivers see their org's staff.
 create policy profiles_select on public.profiles for select to authenticated
   using (
     id = auth.uid()
-    or (organization_id = public.auth_org_id() and public.is_staff())
-    or (organization_id = public.auth_org_id() and role in ('nurse', 'agency_admin'))
+    or (organization_id = (select public.auth_org_id()) and (select public.is_staff()))
+    or (organization_id = (select public.auth_org_id()) and role in ('nurse', 'agency_admin'))
   );
 create policy profiles_update_self on public.profiles for update to authenticated
   using (id = auth.uid())
   with check (id = auth.uid());
 create policy profiles_update_admin on public.profiles for update to authenticated
-  using (organization_id = public.auth_org_id() and public.is_admin())
-  with check (organization_id = public.auth_org_id() and public.is_admin());
+  using (organization_id = (select public.auth_org_id()) and (select public.is_admin()))
+  with check (organization_id = (select public.auth_org_id()) and (select public.is_admin()));
 
 -- patients -------------------------------------------------------------------
 -- Admin branch checks the row directly so INSERT ... RETURNING works for new patients.
 create policy patients_select on public.patients for select to authenticated
   using (
-    (organization_id = public.auth_org_id() and public.is_admin())
-    or public.can_access_patient(id)
+    (organization_id = (select public.auth_org_id()) and (select public.is_admin()))
+    or id in (select public.accessible_patient_ids())
   );
 create policy patients_insert on public.patients for insert to authenticated
-  with check (organization_id = public.auth_org_id() and public.is_admin());
+  with check (organization_id = (select public.auth_org_id()) and (select public.is_admin()));
 create policy patients_update on public.patients for update to authenticated
-  using (public.can_manage_patient(id))
-  with check (organization_id = public.auth_org_id());
+  using (id in (select public.manageable_patient_ids()))
+  with check (organization_id = (select public.auth_org_id()));
 create policy patients_delete on public.patients for delete to authenticated
-  using (organization_id = public.auth_org_id() and public.is_admin());
+  using (organization_id = (select public.auth_org_id()) and (select public.is_admin()));
 
 -- patient_links / caseload (admin-managed) -------------------------------------
 create policy patient_links_select on public.patient_links for select to authenticated
-  using (profile_id = auth.uid() or public.can_manage_patient(patient_id));
+  using (profile_id = auth.uid() or patient_id in (select public.manageable_patient_ids()));
 create policy patient_links_write on public.patient_links for all to authenticated
-  using (organization_id = public.auth_org_id() and public.is_admin())
-  with check (organization_id = public.auth_org_id() and public.is_admin());
+  using (organization_id = (select public.auth_org_id()) and (select public.is_admin()))
+  with check (organization_id = (select public.auth_org_id()) and (select public.is_admin()));
 
 create policy caseload_select on public.caseload_assignments for select to authenticated
   using (
-    organization_id = public.auth_org_id()
-    and public.is_staff()
-    and (nurse_id = auth.uid() or public.is_admin())
+    organization_id = (select public.auth_org_id())
+    and (select public.is_staff())
+    and (nurse_id = auth.uid() or (select public.is_admin()))
   );
 create policy caseload_write on public.caseload_assignments for all to authenticated
-  using (organization_id = public.auth_org_id() and public.is_admin())
-  with check (organization_id = public.auth_org_id() and public.is_admin());
+  using (organization_id = (select public.auth_org_id()) and (select public.is_admin()))
+  with check (organization_id = (select public.auth_org_id()) and (select public.is_admin()));
 
 -- consents (staff manage; family may view) -------------------------------------
 create policy consents_select on public.consents for select to authenticated
-  using (public.can_access_patient(patient_id));
+  using (patient_id in (select public.accessible_patient_ids()));
 create policy consents_insert on public.consents for insert to authenticated
-  with check (public.can_manage_patient(patient_id));
+  with check (patient_id in (select public.manageable_patient_ids()));
 create policy consents_update on public.consents for update to authenticated
-  using (public.can_manage_patient(patient_id))
-  with check (public.can_manage_patient(patient_id));
+  using (patient_id in (select public.manageable_patient_ids()))
+  with check (patient_id in (select public.manageable_patient_ids()));
 
 -- medications (patients/caregivers read-only) -----------------------------------
 create policy medications_select on public.medications for select to authenticated
-  using (public.can_access_patient(patient_id));
+  using (patient_id in (select public.accessible_patient_ids()));
 create policy medications_insert on public.medications for insert to authenticated
-  with check (public.can_manage_patient(patient_id));
+  with check (patient_id in (select public.manageable_patient_ids()));
 create policy medications_update on public.medications for update to authenticated
-  using (public.can_manage_patient(patient_id))
-  with check (public.can_manage_patient(patient_id));
+  using (patient_id in (select public.manageable_patient_ids()))
+  with check (patient_id in (select public.manageable_patient_ids()));
 create policy medications_delete on public.medications for delete to authenticated
-  using (public.can_manage_patient(patient_id) and public.is_admin());
+  using (patient_id in (select public.manageable_patient_ids()) and (select public.is_admin()));
 
 create policy medication_changes_select on public.medication_changes for select to authenticated
-  using (public.can_access_patient(patient_id));
+  using (patient_id in (select public.accessible_patient_ids()));
 create policy medication_changes_insert on public.medication_changes for insert to authenticated
-  with check (public.can_manage_patient(patient_id));
+  with check (patient_id in (select public.manageable_patient_ids()));
 
 -- dose events ----------------------------------------------------------------
 create policy dose_events_select on public.dose_events for select to authenticated
-  using (public.can_access_patient(patient_id));
+  using (patient_id in (select public.accessible_patient_ids()));
 create policy dose_events_insert on public.dose_events for insert to authenticated
-  with check (public.can_manage_patient(patient_id));
+  with check (patient_id in (select public.manageable_patient_ids()));
 -- Patients/caregivers confirm doses; column guard trigger limits what they can change.
 create policy dose_events_update on public.dose_events for update to authenticated
-  using (public.can_access_patient(patient_id))
-  with check (public.can_access_patient(patient_id));
+  using (patient_id in (select public.accessible_patient_ids()))
+  with check (patient_id in (select public.accessible_patient_ids()));
 
 -- symptoms -------------------------------------------------------------------
 create policy symptom_catalog_select on public.symptom_catalog for select to authenticated
   using (true);
 
 create policy symptom_logs_select on public.symptom_logs for select to authenticated
-  using (public.can_access_patient(patient_id));
+  using (patient_id in (select public.accessible_patient_ids()));
 create policy symptom_logs_insert on public.symptom_logs for insert to authenticated
-  with check (public.can_access_patient(patient_id));
+  with check (patient_id in (select public.accessible_patient_ids()));
 create policy symptom_logs_update on public.symptom_logs for update to authenticated
-  using (public.can_access_patient(patient_id))
-  with check (public.can_access_patient(patient_id));
+  using (patient_id in (select public.accessible_patient_ids()))
+  with check (patient_id in (select public.accessible_patient_ids()));
 create policy symptom_logs_delete on public.symptom_logs for delete to authenticated
-  using (public.can_manage_patient(patient_id));
+  using (patient_id in (select public.manageable_patient_ids()));
 
 -- check-in templates (written only by the tailor-checkin function) -------------
 create policy checkin_templates_select on public.checkin_templates for select to authenticated
-  using (public.can_access_patient(patient_id));
+  using (patient_id in (select public.accessible_patient_ids()));
 
 create policy ai_requests_select on public.ai_requests for select to authenticated
-  using (organization_id = public.auth_org_id() and public.is_admin());
+  using (organization_id = (select public.auth_org_id()) and (select public.is_admin()));
 
 -- flags (engine inserts with service role; staff review) -------------------------
 create policy flags_select on public.flags for select to authenticated
-  using (public.can_access_patient(patient_id));
+  using (patient_id in (select public.accessible_patient_ids()));
 create policy flags_update on public.flags for update to authenticated
-  using (public.can_manage_patient(patient_id))
-  with check (public.can_manage_patient(patient_id));
+  using (patient_id in (select public.manageable_patient_ids()))
+  with check (patient_id in (select public.manageable_patient_ids()));
 
 -- alerts (recipient reads and marks read) ---------------------------------------
 create policy alerts_select on public.alerts for select to authenticated
   using (
     recipient_profile_id = auth.uid()
-    or (organization_id = public.auth_org_id() and public.is_admin())
+    or (organization_id = (select public.auth_org_id()) and (select public.is_admin()))
   );
 create policy alerts_update on public.alerts for update to authenticated
   using (recipient_profile_id = auth.uid())
@@ -541,16 +590,16 @@ create policy alerts_update on public.alerts for update to authenticated
 
 -- visit summaries ------------------------------------------------------------
 create policy visit_summaries_select on public.visit_summaries for select to authenticated
-  using (public.can_access_patient(patient_id));
+  using (patient_id in (select public.accessible_patient_ids()));
 create policy visit_summaries_insert on public.visit_summaries for insert to authenticated
-  with check (public.can_manage_patient(patient_id) and generated_by = auth.uid());
+  with check (patient_id in (select public.manageable_patient_ids()) and generated_by = auth.uid());
 
 -- audit log (read: admins; write: triggers/RPCs only; never update/delete) -------
 create policy audit_log_select on public.audit_log for select to authenticated
-  using (organization_id = public.auth_org_id() and public.is_admin());
+  using (organization_id = (select public.auth_org_id()) and (select public.is_admin()));
 
 -- invitations ------------------------------------------------------------------
 create policy invitations_select on public.invitations for select to authenticated
-  using (organization_id = public.auth_org_id() and public.is_admin());
+  using (organization_id = (select public.auth_org_id()) and (select public.is_admin()));
 create policy invitations_delete on public.invitations for delete to authenticated
-  using (organization_id = public.auth_org_id() and public.is_admin());
+  using (organization_id = (select public.auth_org_id()) and (select public.is_admin()));

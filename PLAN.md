@@ -63,8 +63,8 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 ## Phase 7 — Patient and caregiver
 
-- [ ] `/me`: Today, check-in flow (tailored), My medicines
-- [ ] `/care`: My people, patient tabs, alerts
+- [x] `/me`: Today, check-in flow (tailored), My medicines
+- [x] `/care`: My people, patient tabs, alerts
 - [ ] E2E 1, 1b, 2
 
 ## Phase 8 — Nurse

@@ -9,6 +9,8 @@ import { ForgotPasswordPage, ResetPasswordPage } from '@/features/auth/PasswordP
 import { MfaChallengePage, MfaSetupPage } from '@/features/auth/MfaPages';
 import { AcceptInvitePage, NoProfilePage } from '@/features/auth/AcceptInvitePage';
 import { AboutFlagsPage, PrivacyPage, TermsPage } from '@/features/static/StaticPages';
+import { MeCheckinPage, MeMedicinesPage, MeTodayPage } from '@/features/patient/MePages';
+import { CarePatientPage, PeoplePage } from '@/features/caregiver/CaregiverPages';
 
 const STAFF = ['nurse', 'agency_admin'] as const;
 
@@ -43,7 +45,11 @@ export const router = createBrowserRouter([
             <Outlet />
           </RequireRole>
         ),
-        children: [{ index: true, element: <Placeholder title={navCopy.patient.today} /> }],
+        children: [
+          { index: true, element: <MeTodayPage /> },
+          { path: 'checkin', element: <MeCheckinPage /> },
+          { path: 'medicines', element: <MeMedicinesPage /> },
+        ],
       },
       {
         path: '/care',
@@ -52,7 +58,10 @@ export const router = createBrowserRouter([
             <Outlet />
           </RequireRole>
         ),
-        children: [{ index: true, element: <Placeholder title={navCopy.caregiver.people} /> }],
+        children: [
+          { index: true, element: <PeoplePage /> },
+          { path: ':patientId', element: <CarePatientPage /> },
+        ],
       },
       {
         path: '/clinic',

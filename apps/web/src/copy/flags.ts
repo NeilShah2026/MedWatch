@@ -1,4 +1,4 @@
-import type { FlagStatus, FlagType, Severity } from '@medwatch/core';
+import type { ChangeType, FlagStatus, FlagType, Severity } from '@medwatch/core';
 
 export const flagCopy = {
   severity: { high: 'High', medium: 'Medium', low: 'Low' } satisfies Record<Severity, string>,
@@ -50,5 +50,12 @@ export const flagCopy = {
   allOpen: 'Open and acknowledged',
   all: 'All',
   showOnTimeline: 'Show on timeline',
+  changeLabel: {
+    started: 'Started',
+    stopped: 'Stopped',
+    dose_increased: 'Dose raised',
+    dose_decreased: 'Dose lowered',
+    schedule_changed: 'Schedule changed',
+  } satisfies Record<ChangeType, string>,
   placeholderRules: 'Rules are placeholders that still need clinical review.',
 };
