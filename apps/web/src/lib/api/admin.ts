@@ -92,23 +92,19 @@ export async function createPatient(input: {
     .single();
   if (error) throw error;
   const patient = data as PatientRow;
-  const c = await supabase
-    .from('consents')
-    .insert({
-      organization_id: patient.organization_id,
-      patient_id: patient.id,
-      consent_type: 'data_use',
-      ...consent,
-    });
+  const c = await supabase.from('consents').insert({
+    organization_id: patient.organization_id,
+    patient_id: patient.id,
+    consent_type: 'data_use',
+    ...consent,
+  });
   if (c.error) throw c.error;
   if (p.primary_nurse_id) {
-    const a = await supabase
-      .from('caseload_assignments')
-      .insert({
-        organization_id: patient.organization_id,
-        nurse_id: p.primary_nurse_id,
-        patient_id: patient.id,
-      });
+    const a = await supabase.from('caseload_assignments').insert({
+      organization_id: patient.organization_id,
+      nurse_id: p.primary_nurse_id,
+      patient_id: patient.id,
+    });
     if (a.error) throw a.error;
   }
   return patient;
@@ -147,28 +143,24 @@ export async function setCaseload(patient: PatientRow, nurseIds: string[]) {
     if (error) throw error;
   }
   if (add.length) {
-    const { error } = await supabase
-      .from('caseload_assignments')
-      .insert(
-        add.map((nurse_id) => ({
-          organization_id: patient.organization_id,
-          patient_id: patient.id,
-          nurse_id,
-        })),
-      );
+    const { error } = await supabase.from('caseload_assignments').insert(
+      add.map((nurse_id) => ({
+        organization_id: patient.organization_id,
+        patient_id: patient.id,
+        nurse_id,
+      })),
+    );
     if (error) throw error;
   }
 }
 
 export async function linkCaregiver(patient: PatientRow, profileId: string) {
-  const { error } = await supabase
-    .from('patient_links')
-    .insert({
-      organization_id: patient.organization_id,
-      patient_id: patient.id,
-      profile_id: profileId,
-      relationship: 'caregiver',
-    });
+  const { error } = await supabase.from('patient_links').insert({
+    organization_id: patient.organization_id,
+    patient_id: patient.id,
+    profile_id: profileId,
+    relationship: 'caregiver',
+  });
   if (error) throw error;
 }
 
