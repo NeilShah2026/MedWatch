@@ -26,3 +26,9 @@ One line of reasoning per ambiguous choice (spec §0.5).
 - **Nonexistent / ambiguous local times:** spring-forward gap times shift forward by the gap; fall-back ambiguous times use the earlier instant.
 - **Rule files carry `$schema`** pointing to generated JSON Schemas (`npm run rules:schemas`; a test fails if they drift from the Zod source).
 - **Extra rule file `drug_classes.json`:** the medication form's drug-class list comes from rules data so clinicians can edit it; every other file is validated against it.
+- **Seed flags come from the engine:** instead of hand-writing flags, the generator replays `runFlagEngine` at 12:00 local on every history day (then at `now`), simulating nurse review of older flags (story patients 1–4 stay open). This keeps the demo consistent with the real engine and gives dashboards realistic review history.
+- **Seed alerts:** only the last 7 days of missed-dose/escalation alerts are generated (what `check-missed-doses` would have produced), plus flag alerts at the org threshold.
+- **Seed demo accounts:** stories 1–2 are on nurse1's caseload and linked to caregiver1 (story 1 is also `patient1`); stories 3–4 are nurse2/caregiver2; story 5 is nurse3. `patient1` has no check-in today so the E2E check-in flow has work to do.
+- **Dose confirmations without an app account:** background patients' doses are recorded as `caregiver_tap` with no `confirmed_by` (an aide without a login).
+- **Seed id remapping:** the Supabase writer passes generated ids to `auth.admin.createUser`; if the backend assigns different ids, every reference is remapped before insert.
+- **pg_net triggers skip service-context writes** (service role or direct DB sessions) so seeding and server jobs never fan out HTTP calls; only end-user writes trigger on-demand regeneration.

@@ -41,10 +41,10 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 ## Phase 4 — Seed data
 
-- [ ] Deterministic generator (25 patients, 45 days, 5 stories, rules templates)
-- [ ] Writers: Supabase (cloud) and Postgres (local verification)
-- [ ] Guards per Hard Rule 10 (`APP_ENV`, project ref, `--yes`)
-- [ ] Test: generator output + expected flags
+- [x] Deterministic generator (25 patients, 45 days, 5 stories, rules templates)
+- [x] Writers: Supabase (cloud) and Postgres (local verification)
+- [x] Guards per Hard Rule 10 (`APP_ENV`, project ref, `--yes`)
+- [x] Test: generator output + expected flags
 
 ## Phase 5 — Auth and shell
 

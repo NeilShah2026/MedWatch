@@ -140,8 +140,18 @@ security definer
 set search_path = private, public
 as $$
 declare
-  v_patient uuid := coalesce(new.patient_id, old.patient_id);
+  v_patient uuid;
 begin
+  -- Only user-initiated writes trigger calls; server jobs and seeding (service role or a
+  -- direct database session) already run the engines themselves.
+  if public.is_service_context() then
+    return null;
+  end if;
+  if tg_op = 'DELETE' then
+    v_patient := old.patient_id;
+  else
+    v_patient := new.patient_id;
+  end if;
   perform private.invoke_function('tailor-checkin', jsonb_build_object('patient_id', v_patient));
   perform private.invoke_function('run-flag-engine', jsonb_build_object('patient_id', v_patient));
   return null;
@@ -160,6 +170,9 @@ security definer
 set search_path = private, public
 as $$
 begin
+  if public.is_service_context() then
+    return null;
+  end if;
   perform private.invoke_function('run-flag-engine', jsonb_build_object('patient_id', new.patient_id));
   return null;
 end;
