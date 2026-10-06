@@ -548,6 +548,13 @@ describe('invitations', () => {
     ).toMatch(/already used/);
   });
 
+  it('SQL token hash matches the Edge Function hash', async () => {
+    const { hashInviteToken } = await import('../../../supabase/functions/_shared/invite.ts');
+    const tok = 'a1b2c3-token-ü';
+    const r = await db.query('select hash_invite_token($1) h', [tok]);
+    expect(r.rows[0].h).toBe(hashInviteToken(tok));
+  });
+
   it('expired invitations are rejected', async () => {
     const email = `late.${Date.now()}@test.medwatch`;
     const uid = (await db.query('insert into auth.users (email) values ($1) returning id', [email]))

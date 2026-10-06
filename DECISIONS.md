@@ -32,3 +32,8 @@ One line of reasoning per ambiguous choice (spec §0.5).
 - **Dose confirmations without an app account:** background patients' doses are recorded as `caregiver_tap` with no `confirmed_by` (an aide without a login).
 - **Seed id remapping:** the Supabase writer passes generated ids to `auth.admin.createUser`; if the backend assigns different ids, every reference is remapped before insert.
 - **pg_net triggers skip service-context writes** (service role or direct DB sessions) so seeding and server jobs never fan out HTTP calls; only end-user writes trigger on-demand regeneration.
+- **Session-timeout test hook:** outside production, `localStorage['medwatch.e2e.sessionTimeoutSeconds']` overrides the org timeout so E2E 7 runs in about a minute; production ignores it.
+- **Patient/caregiver font size:** the layout sets the root font size to 18px for patient/caregiver roles (16px for staff), so every rem-based size scales as spec §9 asks.
+- **Invite links:** `invite-user` sends Supabase Auth's invite email with `redirectTo=/accept-invite?token=…`; in development it also prints a magic link to the function log. The accept page sets the password and calls `accept_invitation(token)`.
+- **Edge Functions import `packages/core` by relative path** (`../../../packages/core/src/…`) with a `deno.json` import map for `zod` and `supabase-js`; `npm run typecheck` runs `deno check` on every function.
+- **Playwright vs axe types:** `@axe-core/playwright` resolves a newer `playwright-core`; the helper casts the `Page` at one call site rather than overriding versions.

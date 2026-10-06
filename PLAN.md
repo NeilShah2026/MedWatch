@@ -48,10 +48,10 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 ## Phase 5 — Auth and shell
 
-- [ ] Sign in, forgot/reset password, MFA enroll/challenge, accept invitation
-- [ ] Role routing + guards, top bar, alerts bell, session timeout modal
-- [ ] `invite-user` edge function
-- [ ] E2E 7
+- [x] Sign in, forgot/reset password, MFA enroll/challenge, accept invitation
+- [x] Role routing + guards, top bar, alerts bell, session timeout modal
+- [x] `invite-user` edge function
+- [x] E2E 7
 
 ## Phase 6 — AI tailoring
 
