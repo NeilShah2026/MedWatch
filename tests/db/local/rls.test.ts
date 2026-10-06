@@ -621,6 +621,9 @@ describe('alerts and templates', () => {
   });
 
   it('only one active template per patient', async () => {
+    await db.query(`update checkin_templates set status = 'superseded' where patient_id = $1`, [
+      w.p1,
+    ]);
     const ins = `insert into checkin_templates (organization_id, patient_id, medication_fingerprint, source, questions)
                  values ($1, $2, 'fp', 'rules', '[]')`;
     await db.query(ins, [w.orgA, w.p1]);
@@ -683,5 +686,30 @@ describe('catalog and jobs plumbing', () => {
       pid,
     ]);
     expect(left.rows[0].n).toBe(0);
+  });
+});
+
+describe('check-in template replacement', () => {
+  it('replace_checkin_template supersedes atomically and is service-only', async () => {
+    const call = (fp: string) =>
+      db.query(`select replace_checkin_template($1, $2, 'rules', '[]'::jsonb, null, null) id`, [
+        w.p1,
+        fp,
+      ]);
+    await call('fp-a');
+    const second = (await call('fp-b')).rows[0].id;
+    const rows = (
+      await db.query(
+        `select id, status, medication_fingerprint from checkin_templates where patient_id = $1 and medication_fingerprint in ('fp-a','fp-b') order by created_at`,
+        [w.p1],
+      )
+    ).rows;
+    expect(rows.find((r) => r.id === second)?.status).toBe('active');
+    expect(rows.filter((r) => r.status === 'active')).toHaveLength(1);
+    await expectError(
+      asUser(db, w.adminA, (q) =>
+        q(`select replace_checkin_template($1, 'x', 'rules', '[]'::jsonb, null, null)`, [w.p1]),
+      ),
+    );
   });
 });

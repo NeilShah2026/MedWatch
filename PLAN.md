@@ -55,11 +55,11 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 ## Phase 6 — AI tailoring
 
-- [ ] `AiProvider`, `AnthropicGatewayProvider`, `MockAiProvider`
-- [ ] Prompt `checkin_v1.ts`, validator, core-merge, fallback, rate limit
-- [ ] `tailor-checkin` function, fingerprint trigger
-- [ ] AI tests (all failure cases, PHI-free request, metadata-only `ai_requests`, bundle scan)
-- [ ] `npm run ai:smoke`
+- [x] `AiProvider`, `AnthropicGatewayProvider`, `MockAiProvider`
+- [x] Prompt `checkin_v1.ts`, validator, core-merge, fallback, rate limit
+- [x] `tailor-checkin` function, fingerprint trigger
+- [x] AI tests (all failure cases, PHI-free request, metadata-only `ai_requests`, bundle scan)
+- [x] `npm run ai:smoke`
 
 ## Phase 7 — Patient and caregiver
 
