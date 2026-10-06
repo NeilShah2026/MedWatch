@@ -1,9 +1,11 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { log } from './log.mjs';
 
-export const ROOT = resolve(new URL('../..', import.meta.url).pathname);
+// fileURLToPath (not URL.pathname) so paths with spaces and Windows drive letters work.
+export const ROOT = fileURLToPath(new URL('../..', import.meta.url));
 
 const appEnv = z.enum(['local', 'development', 'staging', 'production']);
 
@@ -55,12 +57,14 @@ export const functionsEnvSchema = z
 
 export function parseDotenv(text) {
   const out = {};
-  for (const line of text.split(/\r?\n/)) {
-    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
+  // Tolerate a UTF-8 BOM (Notepad), CRLF line endings, `export KEY=...` and inline comments.
+  for (const line of text.replace(/^\uFEFF/, '').split(/\r?\n/)) {
+    const m = line.match(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
     if (!m) continue;
     let v = m[2];
     if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'")))
       v = v.slice(1, -1);
+    else v = v.replace(/\s+#.*$/, '');
     out[m[1]] = v;
   }
   return out;
@@ -73,7 +77,16 @@ export function readDotenv(file) {
 
 /** Merge .env, .env.functions and process.env (process.env wins). */
 export function loadEnv() {
-  return { ...readDotenv('.env'), ...readDotenv('.env.functions'), ...process.env };
+  // Empty process.env values must not hide values from the files.
+  const fromProcess = Object.fromEntries(
+    Object.entries(process.env).filter(([, v]) => v !== undefined && v !== ''),
+  );
+  const env = { ...readDotenv('.env'), ...readDotenv('.env.functions'), ...fromProcess };
+  if (!env.SUPABASE_DEV_PROJECT_REF) {
+    const ref = projectRefFromUrl(env.VITE_SUPABASE_URL ?? env.SUPABASE_URL ?? '');
+    if (ref) env.SUPABASE_DEV_PROJECT_REF = ref;
+  }
+  return env;
 }
 
 export function formatIssues(error) {
