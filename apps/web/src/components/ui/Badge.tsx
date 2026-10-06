@@ -4,9 +4,12 @@ import { flagCopy } from '@/copy/flags';
 import { IconAlert, IconCircle, IconInfo } from './icons';
 
 const SEV: Record<Severity, { cls: string; icon: ReactNode }> = {
-  high: { cls: 'bg-sev-highbg text-severity-high border-severity-high', icon: <IconAlert /> },
-  medium: { cls: 'bg-sev-mediumbg text-[#8a5a14] border-severity-medium', icon: <IconCircle /> },
-  low: { cls: 'bg-sev-lowbg text-[#3d5f86] border-severity-low', icon: <IconInfo /> },
+  high: { cls: 'bg-sev-highbg text-sevtext-high border-severity-high', icon: <IconAlert /> },
+  medium: {
+    cls: 'bg-sev-mediumbg text-sevtext-medium border-severity-medium',
+    icon: <IconCircle />,
+  },
+  low: { cls: 'bg-sev-lowbg text-sevtext-low border-severity-low', icon: <IconInfo /> },
 };
 
 /** Severity is always color + icon + text (never color alone). */
@@ -33,9 +36,9 @@ export function Pill({
   const tones = {
     neutral: 'bg-bg text-ink border-line',
     good: 'bg-primary-light text-primary-dark border-primary/30',
-    warn: 'bg-sev-mediumbg text-[#8a5a14] border-severity-medium/40',
-    bad: 'bg-sev-highbg text-severity-high border-severity-high/40',
-    info: 'bg-sev-lowbg text-[#3d5f86] border-severity-low/40',
+    warn: 'bg-sev-mediumbg text-sevtext-medium border-severity-medium/40',
+    bad: 'bg-sev-highbg text-sevtext-high border-severity-high/40',
+    info: 'bg-sev-lowbg text-sevtext-low border-severity-low/40',
   };
   return (
     <span

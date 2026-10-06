@@ -69,8 +69,8 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 ## Phase 8 — Nurse
 
-- [ ] Caseload, patient detail (timeline chart, meds, flags, doses, symptoms, summary + PDF, people), flag inbox
-- [ ] Template view + regenerate
+- [x] Caseload, patient detail (timeline chart, meds, flags, doses, symptoms, summary + PDF, people), flag inbox
+- [x] Template view + regenerate
 - [ ] E2E 3, 5
 
 ## Phase 9 — Jobs and alerts

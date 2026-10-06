@@ -12,6 +12,8 @@ export default {
         line: '#E6E1D8',
         severity: { high: '#B4483C', medium: '#C98A2E', low: '#5A7FA6' },
         sev: { highbg: '#F7E4E1', mediumbg: '#F8EDDB', lowbg: '#E4ECF5' },
+        // Darker text shades of the severity colors so labels on tinted backgrounds meet WCAG AA.
+        sevtext: { high: '#8C2F25', medium: '#7A4F12', low: '#34567D' },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],

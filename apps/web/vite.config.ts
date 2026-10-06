@@ -10,6 +10,8 @@ export default defineConfig({
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
   server: { port: 5173, strictPort: true },
+  // Pre-bundle lazily imported heavy deps so the dev server never reloads mid-session.
+  optimizeDeps: { include: ['@react-pdf/renderer', 'recharts'] },
   preview: { port: 4173, strictPort: true },
   build: {
     sourcemap: false,

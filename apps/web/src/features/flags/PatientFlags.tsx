@@ -40,7 +40,7 @@ export function PatientFlags({
   selectedId?: string | null;
 }) {
   const flags = useQuery({ queryKey: qk.flags(patient.id), queryFn: () => fetchFlags(patient.id) });
-  const { meds, changes, staffName } = usePatientContextMaps(patient.id);
+  const { staffName } = usePatientContextMaps(patient.id);
   const [filter, setFilter] = useState<'active' | 'all'>('active');
   return (
     <div className="space-y-3">
@@ -74,8 +74,6 @@ export function PatientFlags({
                 <li key={f.id}>
                   <FlagCard
                     flag={f}
-                    meds={meds}
-                    changes={changes}
                     readOnly={readOnly}
                     reviewerName={staffName}
                     onSelect={onSelect}

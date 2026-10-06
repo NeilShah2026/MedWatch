@@ -32,7 +32,7 @@ export function FieldShell({ label, hint, error, id, children }: FieldShellProps
       ) : null}
       {children}
       {error ? (
-        <p id={`${id}-error`} role="alert" className="text-sm font-semibold text-severity-high">
+        <p id={`${id}-error`} role="alert" className="text-sm font-semibold text-sevtext-high">
           {error}
         </p>
       ) : null}

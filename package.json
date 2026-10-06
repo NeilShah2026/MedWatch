@@ -29,7 +29,9 @@
     "functions:deploy": "node scripts/functions-deploy.mjs",
     "secrets:sync": "node scripts/secrets-sync.mjs",
     "rules:schemas": "tsx scripts/gen-rule-schemas.ts",
-    "ai:smoke": "tsx scripts/ai-smoke.ts"
+    "ai:smoke": "tsx scripts/ai-smoke.ts",
+    "test:e2e:mock": "npm run test:e2e:mock -w apps/web",
+    "mock:supabase": "tsx scripts/mock-supabase/server.ts --port 54399"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

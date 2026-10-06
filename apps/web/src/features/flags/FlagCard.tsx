@@ -4,7 +4,7 @@ import { SYMPTOM_CATALOG, localDate } from '@medwatch/core';
 import { supabase } from '@/lib/supabase';
 import { reviewFlag } from '@/lib/api/flags';
 import { formatDate, formatDateTime } from '@/lib/format';
-import type { FlagRow, MedicationChangeRow, MedicationRow } from '@/lib/types';
+import type { FlagRow, MedicationChangeRow } from '@/lib/types';
 import { flagCopy } from '@/copy/flags';
 import { doseCopy } from '@/copy/doses';
 import { useMe } from '@/app/AuthProvider';
@@ -15,41 +15,35 @@ import { TextAreaField } from '@/components/ui/Field';
 import { useToast } from '@/components/ui/Toast';
 import { IconChevronDown, IconChevronRight } from '@/components/ui/icons';
 
-function Evidence({
-  flag,
-  meds,
-  changes,
-}: {
-  flag: FlagRow;
-  meds: Map<string, MedicationRow>;
-  changes: Map<string, MedicationChangeRow>;
-}) {
+function Evidence({ flag }: { flag: FlagRow }) {
   const { timezone } = useMe();
   const ev = flag.evidence;
   const details = useQuery({
     queryKey: ['flagEvidence', flag.id],
     queryFn: async () => {
-      const [d, l] = await Promise.all([
+      const changeIds = [...ev.medication_change_ids, ...(ev.other_candidate_change_ids ?? [])];
+      const [d, l, m, c] = await Promise.all([
         ev.dose_event_ids.length
           ? supabase
               .from('dose_events')
               .select('id, scheduled_for, status')
               .in('id', ev.dose_event_ids.slice(0, 200))
-          : Promise.resolve({
-              data: [] as { id: string; scheduled_for: string; status: string }[],
-            }),
+          : Promise.resolve({ data: [] }),
         ev.symptom_log_ids.length
           ? supabase
               .from('symptom_logs')
               .select('id, logged_for_date, entries')
               .in('id', ev.symptom_log_ids)
-          : Promise.resolve({
-              data: [] as {
-                id: string;
-                logged_for_date: string;
-                entries: { symptom_code: string; severity: number }[];
-              }[],
-            }),
+          : Promise.resolve({ data: [] }),
+        ev.medication_ids.length || changeIds.length
+          ? supabase.from('medications').select('id, name').eq('patient_id', flag.patient_id)
+          : Promise.resolve({ data: [] }),
+        changeIds.length
+          ? supabase
+              .from('medication_changes')
+              .select('id, medication_id, change_type, effective_date')
+              .in('id', changeIds)
+          : Promise.resolve({ data: [] }),
       ]);
       return {
         doses: (d.data ?? []) as { id: string; scheduled_for: string; status: string }[],
@@ -58,9 +52,25 @@ function Evidence({
           logged_for_date: string;
           entries: { symptom_code: string; severity: number }[];
         }[],
+        meds: new Map(((m.data ?? []) as { id: string; name: string }[]).map((x) => [x.id, x])),
+        changes: new Map(
+          (
+            (c.data ?? []) as Pick<
+              MedicationChangeRow,
+              'id' | 'medication_id' | 'change_type' | 'effective_date'
+            >[]
+          ).map((x) => [x.id, x]),
+        ),
       };
     },
   });
+  const meds = details.data?.meds ?? new Map<string, { id: string; name: string }>();
+  const changes =
+    details.data?.changes ??
+    new Map<
+      string,
+      Pick<MedicationChangeRow, 'id' | 'medication_id' | 'change_type' | 'effective_date'>
+    >();
   const symptom = ev.symptom_code
     ? SYMPTOM_CATALOG.find((s) => s.code === ev.symptom_code)?.label
     : null;
@@ -162,8 +172,6 @@ type ReviewKind = 'dismissed' | 'escalated' | 'note';
 
 export function FlagCard({
   flag,
-  meds,
-  changes,
   readOnly,
   reviewerName,
   onSelect,
@@ -171,8 +179,6 @@ export function FlagCard({
   patientLabel,
 }: {
   flag: FlagRow;
-  meds: Map<string, MedicationRow>;
-  changes: Map<string, MedicationChangeRow>;
   readOnly?: boolean;
   reviewerName?: (id: string) => string | undefined;
   onSelect?: (flag: FlagRow) => void;
@@ -295,7 +301,7 @@ export function FlagCard({
           </Button>
         ) : null}
       </div>
-      {open ? <Evidence flag={flag} meds={meds} changes={changes} /> : null}
+      {open ? <Evidence flag={flag} /> : null}
       <Modal
         open={review !== null}
         onClose={() => setReview(null)}

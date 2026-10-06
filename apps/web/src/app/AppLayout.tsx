@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { NavLink, Outlet, Link } from 'react-router-dom';
+import { NavLink, Outlet, Link, useLocation } from 'react-router-dom';
+import { ErrorBoundary } from './ErrorBoundary';
 import type { Role } from '@medwatch/core';
 import { DemoBanner } from '@/components/ui/DemoBanner';
 import { IconLogOut, IconMenu, IconX } from '@/components/ui/icons';
@@ -55,6 +56,7 @@ export function AppLayout() {
   const { profile } = useMe();
   const { signOut } = useAuth();
   const [menu, setMenu] = useState(false);
+  const location = useLocation();
   const family = profile.role === 'patient' || profile.role === 'caregiver';
 
   // Spec §9: 18px base for patient/caregiver views, 16px for staff.
@@ -158,7 +160,9 @@ export function AppLayout() {
         ) : null}
       </header>
       <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
-        <Outlet />
+        <ErrorBoundary resetKey={location.pathname}>
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <Footer />
       <SessionTimeout />
@@ -179,7 +183,9 @@ export function PublicLayout() {
         </div>
       </header>
       <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <Footer />
     </div>

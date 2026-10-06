@@ -6,6 +6,7 @@
     "checkJs": false
   },
   "include": [
+    "scripts/mock-supabase/**/*.ts",
     "tests/**/*.ts",
     "scripts/**/*.ts",
     "supabase/seed/**/*.ts",

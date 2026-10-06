@@ -11,6 +11,9 @@ import { AcceptInvitePage, NoProfilePage } from '@/features/auth/AcceptInvitePag
 import { AboutFlagsPage, PrivacyPage, TermsPage } from '@/features/static/StaticPages';
 import { MeCheckinPage, MeMedicinesPage, MeTodayPage } from '@/features/patient/MePages';
 import { CarePatientPage, PeoplePage } from '@/features/caregiver/CaregiverPages';
+import { CaseloadPage } from '@/features/clinic/CaseloadPage';
+import { FlagInboxPage } from '@/features/clinic/FlagInboxPage';
+import { PatientDetailPage } from '@/features/clinic/PatientDetailPage';
 
 const STAFF = ['nurse', 'agency_admin'] as const;
 
@@ -70,7 +73,11 @@ export const router = createBrowserRouter([
             <Outlet />
           </RequireRole>
         ),
-        children: [{ index: true, element: <Placeholder title={navCopy.nurse.caseload} /> }],
+        children: [
+          { index: true, element: <CaseloadPage /> },
+          { path: 'flags', element: <FlagInboxPage /> },
+          { path: 'patients/:patientId', element: <PatientDetailPage /> },
+        ],
       },
       {
         path: '/admin',
