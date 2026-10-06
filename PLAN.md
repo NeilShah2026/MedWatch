@@ -86,6 +86,6 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 ## Phase 11 — Hardening and deploy prep
 
-- [ ] Axe pass, wording + PHI tests, bundle secret scan, empty/error states
-- [ ] Production build with Vercel config
-- [ ] README, FINAL_REPORT, docs complete
+- [x] Axe pass, wording + PHI tests, bundle secret scan, empty/error states
+- [x] Production build with Vercel config
+- [x] README, FINAL_REPORT, docs complete

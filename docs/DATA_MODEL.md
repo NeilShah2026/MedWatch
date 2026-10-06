@@ -257,4 +257,4 @@ Every `organization_id` and `patient_id` column is indexed, plus `dose_events (s
 ## Reporting functions
 
 Aggregations used by dashboards run in SQL (security invoker, so RLS applies) to avoid shipping
-thousands of rows to the browser. See `20261006000007_reporting.sql`.
+thousands of rows to the browser. See `20261006000008_reporting.sql`. Template replacement is the service-only RPC `replace_checkin_template` (`…000007`), and `…000009` adds a partial unique index so at most one open/acknowledged flag exists per `(patient_id, dedupe_key)`.

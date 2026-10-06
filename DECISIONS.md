@@ -60,3 +60,7 @@ One line of reasoning per ambiguous choice (spec §0.5).
 - **Hard delete** requires typing DELETE; the cascade is audited row by row. **Discharge** is a status change (records kept).
 - **Patient JSON export** pages through every patient table under the admin's RLS and is written to the audit log before the file is produced.
 - **CSV exports** neutralize spreadsheet formulas (leading `= + - @`) and are logged with row counts and date range only.
+- **Code splitting:** role areas load lazily (patients never download nurse/admin code or charts); `@react-pdf/renderer` loads only when a PDF is generated, and the dev server pre-bundles it so it never reloads mid-export.
+- **`npm run test:e2e` without credentials** starts the dev server with placeholder Supabase values, so the public-page and axe tests still run; backend tests skip themselves.
+- **Function bundling risk:** Edge Functions import `packages/core` and `rules/*.json` from outside `supabase/functions`. `deno check` passes; if `supabase functions deploy` does not include them, add a vendoring step in `scripts/functions-deploy.mjs` (copy `packages/core/src` and `rules/` under `supabase/functions/_shared/` and rewrite the import prefix) — recorded as a known gap.
+- **Dependency advisories:** production has only React Router v6 (moderate; v6 is spec-mandated). The critical advisory is in Vitest 3's dev-only worker pool and is not shipped.

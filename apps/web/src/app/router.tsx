@@ -1,4 +1,6 @@
+import { Suspense, lazy, type ComponentType, type ReactNode } from 'react';
 import { createBrowserRouter, Outlet } from 'react-router-dom';
+import { Loading } from '@/components/ui/States';
 import { AppLayout, PublicLayout } from './AppLayout';
 import { RequireAuth, RequireRole, RoleHome } from './guards';
 import { NotFoundPage } from './ErrorPages';
@@ -7,17 +9,34 @@ import { ForgotPasswordPage, ResetPasswordPage } from '@/features/auth/PasswordP
 import { MfaChallengePage, MfaSetupPage } from '@/features/auth/MfaPages';
 import { AcceptInvitePage, NoProfilePage } from '@/features/auth/AcceptInvitePage';
 import { AboutFlagsPage, PrivacyPage, TermsPage } from '@/features/static/StaticPages';
-import { MeCheckinPage, MeMedicinesPage, MeTodayPage } from '@/features/patient/MePages';
-import { CarePatientPage, PeoplePage } from '@/features/caregiver/CaregiverPages';
-import { CaseloadPage } from '@/features/clinic/CaseloadPage';
-import { FlagInboxPage } from '@/features/clinic/FlagInboxPage';
-import { PatientDetailPage } from '@/features/clinic/PatientDetailPage';
-import { DashboardPage } from '@/features/admin/DashboardPage';
-import { PatientsPage } from '@/features/admin/PatientsPage';
-import { TeamPage } from '@/features/admin/TeamPage';
-import { SettingsPage } from '@/features/admin/SettingsPage';
-import { AuditPage } from '@/features/admin/AuditPage';
-import { PilotMetricsPage, PilotReportPage } from '@/features/admin/PilotPages';
+// Role areas are code-split so each user only downloads what their role needs.
+const lazyNamed = <K extends string>(load: () => Promise<Record<K, ComponentType>>, name: K) =>
+  lazy(async () => ({ default: (await load())[name] }));
+const MeTodayPage = lazyNamed(() => import('@/features/patient/MePages'), 'MeTodayPage');
+const MeCheckinPage = lazyNamed(() => import('@/features/patient/MePages'), 'MeCheckinPage');
+const MeMedicinesPage = lazyNamed(() => import('@/features/patient/MePages'), 'MeMedicinesPage');
+const PeoplePage = lazyNamed(() => import('@/features/caregiver/CaregiverPages'), 'PeoplePage');
+const CarePatientPage = lazyNamed(
+  () => import('@/features/caregiver/CaregiverPages'),
+  'CarePatientPage',
+);
+const CaseloadPage = lazyNamed(() => import('@/features/clinic/CaseloadPage'), 'CaseloadPage');
+const FlagInboxPage = lazyNamed(() => import('@/features/clinic/FlagInboxPage'), 'FlagInboxPage');
+const PatientDetailPage = lazyNamed(
+  () => import('@/features/clinic/PatientDetailPage'),
+  'PatientDetailPage',
+);
+const DashboardPage = lazyNamed(() => import('@/features/admin/DashboardPage'), 'DashboardPage');
+const PatientsPage = lazyNamed(() => import('@/features/admin/PatientsPage'), 'PatientsPage');
+const TeamPage = lazyNamed(() => import('@/features/admin/TeamPage'), 'TeamPage');
+const SettingsPage = lazyNamed(() => import('@/features/admin/SettingsPage'), 'SettingsPage');
+const AuditPage = lazyNamed(() => import('@/features/admin/AuditPage'), 'AuditPage');
+const PilotMetricsPage = lazyNamed(() => import('@/features/admin/PilotPages'), 'PilotMetricsPage');
+const PilotReportPage = lazyNamed(() => import('@/features/admin/PilotPages'), 'PilotReportPage');
+
+function Area({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<Loading />}>{children}</Suspense>;
+}
 
 const STAFF = ['nurse', 'agency_admin'] as const;
 
@@ -49,7 +68,9 @@ export const router = createBrowserRouter([
         path: '/me',
         element: (
           <RequireRole roles={['patient']}>
-            <Outlet />
+            <Area>
+              <Outlet />
+            </Area>
           </RequireRole>
         ),
         children: [
@@ -62,7 +83,9 @@ export const router = createBrowserRouter([
         path: '/care',
         element: (
           <RequireRole roles={['caregiver']}>
-            <Outlet />
+            <Area>
+              <Outlet />
+            </Area>
           </RequireRole>
         ),
         children: [
@@ -74,7 +97,9 @@ export const router = createBrowserRouter([
         path: '/clinic',
         element: (
           <RequireRole roles={[...STAFF]}>
-            <Outlet />
+            <Area>
+              <Outlet />
+            </Area>
           </RequireRole>
         ),
         children: [
@@ -87,7 +112,9 @@ export const router = createBrowserRouter([
         path: '/admin',
         element: (
           <RequireRole roles={['agency_admin']}>
-            <Outlet />
+            <Area>
+              <Outlet />
+            </Area>
           </RequireRole>
         ),
         children: [
