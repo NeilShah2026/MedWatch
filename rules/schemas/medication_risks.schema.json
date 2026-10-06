@@ -1,0 +1,91 @@
+{
+  "$ref": "#/definitions/medication_risks",
+  "definitions": {
+    "medication_risks": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["PLACEHOLDER_REQUIRES_CLINICAL_REVIEW", "CLINICIAN_APPROVED"]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 400
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z]+\\.[a-z0-9_]+$"
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+$"
+              },
+              "status": {
+                "type": "string",
+                "enum": ["PLACEHOLDER_REQUIRES_CLINICAL_REVIEW", "CLINICIAN_APPROVED"]
+              },
+              "description": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 400
+              },
+              "source_note": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 400
+              },
+              "severity": {
+                "type": "string",
+                "enum": ["low", "medium", "high"]
+              },
+              "drug_class": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 80
+              },
+              "risk_summary": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 400
+              },
+              "min_days_active": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "status",
+              "description",
+              "source_note",
+              "severity",
+              "drug_class",
+              "title",
+              "risk_summary"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": ["status", "version", "description", "rules"],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

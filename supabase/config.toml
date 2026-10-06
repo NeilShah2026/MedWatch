@@ -1,0 +1,33 @@
+# Supabase CLI configuration. MedWatch uses a hosted (cloud) project only — no local Docker stack.
+project_id = "medwatch"
+
+[api]
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+
+[db]
+major_version = 15
+
+[auth]
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/**"]
+enable_signup = false
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+# Every function authenticates itself: either the x-cron-secret header (pg_cron / pg_net)
+# or a user access token checked with auth.getUser(). See supabase/functions/_shared/auth.ts.
+[functions.tailor-checkin]
+verify_jwt = false
+[functions.generate-doses]
+verify_jwt = false
+[functions.check-missed-doses]
+verify_jwt = false
+[functions.run-flag-engine]
+verify_jwt = false
+[functions.send-alert]
+verify_jwt = false
+[functions.invite-user]
+verify_jwt = false

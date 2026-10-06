@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 16px;
+  }
+  body {
+    @apply bg-bg text-ink antialiased;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 3px solid #2f6f73;
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* 18px base for patient and caregiver views */
+  .text-patient {
+    font-size: 1.125rem;
+  }
+  .card {
+    @apply rounded-xl border border-line bg-surface p-4 shadow-sm;
+  }
+  .sr-only-focusable:not(:focus) {
+    @apply sr-only;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+}

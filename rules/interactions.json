@@ -1,0 +1,124 @@
+{
+  "$schema": "./schemas/interactions.schema.json",
+  "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+  "version": "0.1.0",
+  "description": "Original, illustrative class-pair combinations. A rule matches when one active medicine is in group_a and a different active medicine is in group_b. NOT derived from any licensed interaction database.",
+  "rules": [
+    {
+      "id": "ix.cns_depressants",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Two or more medicines that slow the nervous system.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "high",
+      "group_a": [
+        "sedative_hypnotic",
+        "benzodiazepine",
+        "opioid",
+        "muscle_relaxant",
+        "antipsychotic",
+        "gabapentinoid"
+      ],
+      "group_b": [
+        "sedative_hypnotic",
+        "benzodiazepine",
+        "opioid",
+        "muscle_relaxant",
+        "antipsychotic",
+        "gabapentinoid"
+      ],
+      "title": "Two medicines that cause sleepiness",
+      "risk_summary": "Together these kinds of medicines can add up to more sleepiness, slower breathing and a higher fall risk."
+    },
+    {
+      "id": "ix.anticoagulant_nsaid",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Blood thinner together with an NSAID pain reliever.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "high",
+      "group_a": ["anticoagulant"],
+      "group_b": ["nsaid"],
+      "title": "Blood thinner with an NSAID",
+      "risk_summary": "Together these kinds of medicines can raise the chance of bleeding."
+    },
+    {
+      "id": "ix.multiple_anticholinergics",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Two or more medicines with anticholinergic effects.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "medium",
+      "group_a": ["anticholinergic", "first_gen_antihistamine", "tricyclic_antidepressant"],
+      "group_b": ["anticholinergic", "first_gen_antihistamine", "tricyclic_antidepressant"],
+      "title": "More than one anticholinergic medicine",
+      "risk_summary": "Together these kinds of medicines can add up to more confusion, dry mouth and constipation."
+    },
+    {
+      "id": "ix.anticoagulant_antiplatelet",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Blood thinner together with an antiplatelet medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "medium",
+      "group_a": ["anticoagulant"],
+      "group_b": ["antiplatelet"],
+      "title": "Blood thinner with an antiplatelet",
+      "risk_summary": "Together these kinds of medicines can raise the chance of bruising and bleeding."
+    },
+    {
+      "id": "ix.bp_nsaid",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Blood pressure or water pill together with an NSAID.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "medium",
+      "group_a": ["ace_inhibitor", "thiazide_diuretic", "loop_diuretic"],
+      "group_b": ["nsaid"],
+      "title": "Blood pressure medicine with an NSAID",
+      "risk_summary": "Together these kinds of medicines can affect kidney function and blood pressure control."
+    },
+    {
+      "id": "ix.ssri_bleeding",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "SSRI together with a blood thinner or NSAID.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "medium",
+      "group_a": ["ssri"],
+      "group_b": ["anticoagulant", "nsaid", "antiplatelet"],
+      "title": "SSRI with a bleeding-risk medicine",
+      "risk_summary": "Together these kinds of medicines can raise the chance of bruising and bleeding."
+    },
+    {
+      "id": "ix.alpha_blocker_bp",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Alpha blocker together with another blood-pressure-lowering medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "group_a": ["alpha_blocker"],
+      "group_b": [
+        "ace_inhibitor",
+        "calcium_channel_blocker",
+        "beta_blocker",
+        "thiazide_diuretic",
+        "loop_diuretic"
+      ],
+      "title": "Two medicines that lower blood pressure",
+      "risk_summary": "Together these kinds of medicines can cause dizziness when standing up."
+    },
+    {
+      "id": "ix.sulfonylurea_beta_blocker",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Long-acting sulfonylurea together with a beta blocker.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "group_a": ["long_acting_sulfonylurea"],
+      "group_b": ["beta_blocker"],
+      "title": "Diabetes medicine with a beta blocker",
+      "risk_summary": "Together these kinds of medicines can make the warning signs of low blood sugar harder to notice."
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "$schema": "./schemas/medication_risks.schema.json",
+  "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+  "version": "0.1.0",
+  "description": "Original, illustrative examples of medication classes that may deserve a closer look in older adults. NOT derived from any licensed or proprietary criteria. Must be reviewed and replaced by a clinician before clinical use.",
+  "rules": [
+    {
+      "id": "risk.sedative_hypnotic",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Sleep medicines on the active list.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "medium",
+      "drug_class": "sedative_hypnotic",
+      "title": "Sleep medicine on the list",
+      "risk_summary": "This kind of medicine can raise fall risk and cause next-day sleepiness in older adults."
+    },
+    {
+      "id": "risk.benzodiazepine",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Benzodiazepines on the active list.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "medium",
+      "drug_class": "benzodiazepine",
+      "title": "Benzodiazepine on the list",
+      "risk_summary": "This kind of medicine can affect balance, memory and alertness in older adults."
+    },
+    {
+      "id": "risk.first_gen_antihistamine",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Older-type (sedating) antihistamines on the active list.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "first_gen_antihistamine",
+      "title": "Older-type antihistamine on the list",
+      "risk_summary": "This kind of medicine can cause drowsiness, dry mouth and confusion in older adults."
+    },
+    {
+      "id": "risk.anticholinergic",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Strongly anticholinergic medicines on the active list.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "anticholinergic",
+      "title": "Anticholinergic medicine on the list",
+      "risk_summary": "This kind of medicine can cause confusion, constipation and trouble passing urine in older adults."
+    },
+    {
+      "id": "risk.long_acting_sulfonylurea",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Long-acting sulfonylureas on the active list.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "medium",
+      "drug_class": "long_acting_sulfonylurea",
+      "title": "Long-acting diabetes medicine on the list",
+      "risk_summary": "This kind of medicine can cause low blood sugar that lasts a long time in older adults."
+    },
+    {
+      "id": "risk.nsaid_long_term",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "NSAID pain relievers taken for 30 days or longer.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "medium",
+      "drug_class": "nsaid",
+      "min_days_active": 30,
+      "title": "Long-term NSAID use",
+      "risk_summary": "Taking this kind of pain reliever for a long time can affect the stomach, kidneys and blood pressure in older adults."
+    },
+    {
+      "id": "risk.muscle_relaxant",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Muscle relaxants on the active list.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "muscle_relaxant",
+      "title": "Muscle relaxant on the list",
+      "risk_summary": "This kind of medicine can cause sleepiness and unsteadiness in older adults."
+    },
+    {
+      "id": "risk.antipsychotic",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Antipsychotics on the active list.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "medium",
+      "drug_class": "antipsychotic",
+      "title": "Antipsychotic on the list",
+      "risk_summary": "This kind of medicine can raise fall risk and affect alertness in older adults."
+    },
+    {
+      "id": "risk.opioid",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Opioid pain medicines on the active list.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "medium",
+      "drug_class": "opioid",
+      "title": "Opioid pain medicine on the list",
+      "risk_summary": "This kind of medicine can cause sleepiness, constipation and falls in older adults."
+    },
+    {
+      "id": "risk.ppi_long_term",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Proton pump inhibitors taken for 90 days or longer.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "ppi",
+      "min_days_active": 90,
+      "title": "Long-term stomach acid medicine",
+      "risk_summary": "Taking this kind of medicine for a long time may be worth a periodic check in older adults."
+    }
+  ]
+}
