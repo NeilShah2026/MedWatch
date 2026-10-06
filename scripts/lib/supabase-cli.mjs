@@ -1,9 +1,9 @@
-import { spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { z } from 'zod';
 import { ROOT, loadEnv, requireEnv } from './env.mjs';
 import { log } from './log.mjs';
+import { redactArgs, runBin } from './bin.mjs';
 
 export const cliEnvSchema = z.object({
   SUPABASE_ACCESS_TOKEN: z.string().min(10),
@@ -13,18 +13,18 @@ export const cliEnvSchema = z.object({
 
 /** Run the Supabase CLI non-interactively. Exits the process on failure. */
 export function supabase(args, { env = loadEnv(), allowFail = false, input } = {}) {
-  log.info(`$ supabase ${args.map((a) => (a.length > 40 ? a.slice(0, 8) + '…' : a)).join(' ')}`);
-  const r = spawnSync('npx', ['--no-install', 'supabase', ...args], {
-    cwd: ROOT,
-    stdio: input ? ['pipe', 'inherit', 'inherit'] : 'inherit',
+  log.info(`$ supabase ${redactArgs(args).join(' ')}`);
+  const r = runBin('supabase', args, {
+    env,
     input,
-    env: { ...env, SUPABASE_INTERNAL_NO_DOTENV: '1' },
+    stdio: input ? ['pipe', 'inherit', 'inherit'] : 'inherit',
   });
+  if (r.error) log.error(`Could not start the Supabase CLI: ${r.error.message}`);
   if (r.status !== 0 && !allowFail) {
     log.error(`supabase ${args[0]} failed with exit code ${r.status}`);
-    process.exit(r.status ?? 1);
+    process.exit(r.status || 1);
   }
-  return r.status ?? 1;
+  return r.status;
 }
 
 export function requireCliEnv() {

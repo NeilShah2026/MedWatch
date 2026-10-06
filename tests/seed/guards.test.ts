@@ -76,11 +76,16 @@ describe('destructive script guards (Hard Rule 10)', () => {
     ).toBe(false);
   });
   it('the CLI exits non-zero and prints the target without --yes', () => {
-    const r = spawnSync('npx', ['tsx', resolve(__dirname, '../../supabase/seed/cli.ts'), 'reset'], {
-      env: { PATH: process.env.PATH ?? '', HOME: process.env.HOME ?? '', ...okCloud },
-      encoding: 'utf8',
-      cwd: resolve(__dirname, '../..'),
-    });
+    const tsx = resolve(__dirname, '../../node_modules/tsx/dist/cli.mjs');
+    const r = spawnSync(
+      process.execPath,
+      [tsx, resolve(__dirname, '../../supabase/seed/cli.ts'), 'reset'],
+      {
+        env: { PATH: process.env.PATH ?? '', HOME: process.env.HOME ?? '', ...okCloud },
+        encoding: 'utf8',
+        cwd: resolve(__dirname, '../..'),
+      },
+    );
     expect(r.status).toBe(1);
     expect(r.stdout).toContain(`Target: Supabase project ${REF}`);
     expect(r.stderr).toContain('--yes');
