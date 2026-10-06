@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, cpSync, mkdirSync, symlinkSync } from 'node:fs';
+import { mkdtempSync, readFileSync, cpSync, mkdirSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import {
@@ -14,6 +14,13 @@ const ROOT = resolve(__dirname, '../..');
 const REF = 'abcdefghijklmnopqrst';
 
 describe('env helpers', () => {
+  it('tolerates BOM, CRLF, export prefixes and inline comments', () => {
+    expect(parseDotenv('\uFEFFA=1\r\nexport B=two # note\r\nC="x # y"\r\n')).toEqual({
+      A: '1',
+      B: 'two',
+      C: 'x # y',
+    });
+  });
   it('parses dotenv text', () => {
     expect(parseDotenv('A=1\n# c\nB="two"\nC=\'3\'\n')).toEqual({ A: '1', B: 'two', C: '3' });
   });
@@ -80,5 +87,25 @@ describe('write-env.mjs', () => {
     expect(fns).toMatch(/CRON_SECRET=[0-9a-f]{48}/);
     // Secrets for scripts must never be written with a VITE_ prefix.
     expect(env).not.toMatch(/VITE_[A-Z_]*SERVICE/);
+  });
+});
+
+describe('CLI env loading from a folder with spaces', () => {
+  it('finds .env and derives the project ref from the URL', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'mw env with spaces '));
+    cpSync(join(ROOT, 'scripts'), join(dir, 'scripts'), { recursive: true });
+    symlinkSync(join(ROOT, 'node_modules'), join(dir, 'node_modules'));
+    writeFileSync(
+      join(dir, '.env'),
+      `\uFEFFVITE_SUPABASE_URL=https://${REF}.supabase.co\r\nSUPABASE_ACCESS_TOKEN=sbp_token_123\r\nSUPABASE_DB_PASSWORD=pw\r\n`,
+    );
+    const script = `import { requireCliEnv } from './scripts/lib/supabase-cli.mjs'; const e = requireCliEnv(); console.log(e.SUPABASE_DEV_PROJECT_REF);`;
+    const r = spawnSync('node', ['--input-type=module', '-e', script], {
+      cwd: dir,
+      env: { PATH: process.env.PATH ?? '', SUPABASE_ACCESS_TOKEN: '' },
+      encoding: 'utf8',
+    });
+    expect(r.stderr).toBe('');
+    expect(r.stdout.trim()).toBe(REF);
   });
 });

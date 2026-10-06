@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { readdirSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { z } from 'zod';
 import { ROOT, loadEnv, requireEnv } from './env.mjs';
@@ -28,7 +28,13 @@ export function supabase(args, { env = loadEnv(), allowFail = false, input } = {
 }
 
 export function requireCliEnv() {
-  return requireEnv(cliEnvSchema, 'Supabase CLI');
+  const env = loadEnv();
+  if (!existsSync(resolve(ROOT, '.env'))) {
+    log.error(
+      `No .env file found at ${resolve(ROOT, '.env')} (copy .env.example there and fill it in).`,
+    );
+  }
+  return requireEnv(cliEnvSchema, 'Supabase CLI', env);
 }
 
 export function link(env) {
