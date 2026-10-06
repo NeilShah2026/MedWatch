@@ -1,0 +1,112 @@
+{
+  "$schema": "./schemas/drug_classes.schema.json",
+  "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+  "version": "0.1.0",
+  "description": "Drug classes MedWatch understands. Used for the medication form and referenced by every other rule file.",
+  "classes": [
+    {
+      "code": "sedative_hypnotic",
+      "label": "Sleep medicine (sedative-hypnotic)"
+    },
+    {
+      "code": "benzodiazepine",
+      "label": "Benzodiazepine"
+    },
+    {
+      "code": "first_gen_antihistamine",
+      "label": "Older-type antihistamine"
+    },
+    {
+      "code": "anticholinergic",
+      "label": "Anticholinergic (e.g. bladder medicine)"
+    },
+    {
+      "code": "tricyclic_antidepressant",
+      "label": "Tricyclic antidepressant"
+    },
+    {
+      "code": "ssri",
+      "label": "SSRI antidepressant"
+    },
+    {
+      "code": "antipsychotic",
+      "label": "Antipsychotic"
+    },
+    {
+      "code": "opioid",
+      "label": "Opioid pain medicine"
+    },
+    {
+      "code": "muscle_relaxant",
+      "label": "Muscle relaxant"
+    },
+    {
+      "code": "gabapentinoid",
+      "label": "Nerve pain medicine (gabapentinoid)"
+    },
+    {
+      "code": "nsaid",
+      "label": "NSAID pain reliever"
+    },
+    {
+      "code": "anticoagulant",
+      "label": "Blood thinner (anticoagulant)"
+    },
+    {
+      "code": "antiplatelet",
+      "label": "Antiplatelet"
+    },
+    {
+      "code": "long_acting_sulfonylurea",
+      "label": "Long-acting sulfonylurea (diabetes)"
+    },
+    {
+      "code": "biguanide",
+      "label": "Biguanide (diabetes)"
+    },
+    {
+      "code": "ace_inhibitor",
+      "label": "ACE inhibitor (blood pressure)"
+    },
+    {
+      "code": "calcium_channel_blocker",
+      "label": "Calcium channel blocker (blood pressure)"
+    },
+    {
+      "code": "beta_blocker",
+      "label": "Beta blocker"
+    },
+    {
+      "code": "thiazide_diuretic",
+      "label": "Thiazide diuretic (water pill)"
+    },
+    {
+      "code": "loop_diuretic",
+      "label": "Loop diuretic (water pill)"
+    },
+    {
+      "code": "alpha_blocker",
+      "label": "Alpha blocker"
+    },
+    {
+      "code": "statin",
+      "label": "Statin (cholesterol)"
+    },
+    {
+      "code": "ppi",
+      "label": "Proton pump inhibitor (stomach acid)"
+    },
+    {
+      "code": "thyroid_hormone",
+      "label": "Thyroid hormone"
+    },
+    {
+      "code": "vitamin_supplement",
+      "label": "Vitamin or supplement"
+    },
+    {
+      "code": "other",
+      "label": "Other"
+    }
+  ]
+}

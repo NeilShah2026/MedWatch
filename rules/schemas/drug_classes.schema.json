@@ -1,0 +1,46 @@
+{
+  "$ref": "#/definitions/drug_classes",
+  "definitions": {
+    "drug_classes": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["PLACEHOLDER_REQUIRES_CLINICAL_REVIEW", "CLINICIAN_APPROVED"]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 400
+        },
+        "classes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 80
+              }
+            },
+            "required": ["code", "label"],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": ["status", "version", "description", "classes"],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,538 @@
+{
+  "$schema": "./schemas/side_effect_associations.schema.json",
+  "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+  "version": "0.1.0",
+  "description": "Original, illustrative map from drug class to symptoms that may follow a start or dose change, with a typical onset window in days. Used by the temporal-correlation flag and by the rules-based check-in builder. NOT derived from any licensed database.",
+  "rules": [
+    {
+      "id": "se.sedative_hypnotic",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a sedative hypnotic medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "sedative_hypnotic",
+      "symptoms": [
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "drowsiness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "confusion",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "fall_or_near_fall",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.benzodiazepine",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a benzodiazepine medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "benzodiazepine",
+      "symptoms": [
+        {
+          "symptom_code": "drowsiness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "confusion",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "fall_or_near_fall",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.first_gen_antihistamine",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a first gen antihistamine medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "first_gen_antihistamine",
+      "symptoms": [
+        {
+          "symptom_code": "drowsiness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 3
+        },
+        {
+          "symptom_code": "dry_mouth",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "confusion",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "constipation",
+          "typical_onset_days_min": 2,
+          "typical_onset_days_max": 10
+        },
+        {
+          "symptom_code": "urinary_problems",
+          "typical_onset_days_min": 2,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.anticholinergic",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a anticholinergic medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "anticholinergic",
+      "symptoms": [
+        {
+          "symptom_code": "dry_mouth",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "constipation",
+          "typical_onset_days_min": 2,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "confusion",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "urinary_problems",
+          "typical_onset_days_min": 2,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.tricyclic_antidepressant",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a tricyclic antidepressant medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "tricyclic_antidepressant",
+      "symptoms": [
+        {
+          "symptom_code": "dry_mouth",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "drowsiness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 10
+        },
+        {
+          "symptom_code": "constipation",
+          "typical_onset_days_min": 2,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.opioid",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a opioid medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "opioid",
+      "symptoms": [
+        {
+          "symptom_code": "constipation",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "drowsiness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 5
+        },
+        {
+          "symptom_code": "nausea",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 5
+        },
+        {
+          "symptom_code": "confusion",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        }
+      ]
+    },
+    {
+      "id": "se.nsaid",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a nsaid medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "nsaid",
+      "symptoms": [
+        {
+          "symptom_code": "nausea",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "leg_swelling",
+          "typical_onset_days_min": 3,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "bruising_or_bleeding",
+          "typical_onset_days_min": 3,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.anticoagulant",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a anticoagulant medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "anticoagulant",
+      "symptoms": [
+        {
+          "symptom_code": "bruising_or_bleeding",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.ace_inhibitor",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a ace inhibitor medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "ace_inhibitor",
+      "symptoms": [
+        {
+          "symptom_code": "cough",
+          "typical_onset_days_min": 3,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        }
+      ]
+    },
+    {
+      "id": "se.calcium_channel_blocker",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a calcium channel blocker medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "calcium_channel_blocker",
+      "symptoms": [
+        {
+          "symptom_code": "leg_swelling",
+          "typical_onset_days_min": 3,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "headache",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        }
+      ]
+    },
+    {
+      "id": "se.beta_blocker",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a beta blocker medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "beta_blocker",
+      "symptoms": [
+        {
+          "symptom_code": "fatigue",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        },
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "low_mood",
+          "typical_onset_days_min": 7,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.thiazide_diuretic",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a thiazide diuretic medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "thiazide_diuretic",
+      "symptoms": [
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "urinary_problems",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 3
+        },
+        {
+          "symptom_code": "muscle_pain",
+          "typical_onset_days_min": 3,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.loop_diuretic",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a loop diuretic medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "loop_diuretic",
+      "symptoms": [
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "urinary_problems",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 3
+        },
+        {
+          "symptom_code": "muscle_pain",
+          "typical_onset_days_min": 3,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.statin",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a statin medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "statin",
+      "symptoms": [
+        {
+          "symptom_code": "muscle_pain",
+          "typical_onset_days_min": 7,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.biguanide",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a biguanide medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "biguanide",
+      "symptoms": [
+        {
+          "symptom_code": "nausea",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "diarrhea",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "low_appetite",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 10
+        }
+      ]
+    },
+    {
+      "id": "se.ssri",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a ssri medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "ssri",
+      "symptoms": [
+        {
+          "symptom_code": "nausea",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "headache",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "trouble_sleeping",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 10
+        },
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        }
+      ]
+    },
+    {
+      "id": "se.antipsychotic",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a antipsychotic medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "antipsychotic",
+      "symptoms": [
+        {
+          "symptom_code": "drowsiness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "fall_or_near_fall",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.gabapentinoid",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a gabapentinoid medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "gabapentinoid",
+      "symptoms": [
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "drowsiness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        },
+        {
+          "symptom_code": "leg_swelling",
+          "typical_onset_days_min": 3,
+          "typical_onset_days_max": 14
+        }
+      ]
+    },
+    {
+      "id": "se.alpha_blocker",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a alpha blocker medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "alpha_blocker",
+      "symptoms": [
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 5
+        },
+        {
+          "symptom_code": "fall_or_near_fall",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 7
+        }
+      ]
+    },
+    {
+      "id": "se.muscle_relaxant",
+      "version": "0.1.0",
+      "status": "PLACEHOLDER_REQUIRES_CLINICAL_REVIEW",
+      "description": "Symptoms that may follow starting or changing a muscle relaxant medicine.",
+      "source_note": "Illustrative placeholder written for MedWatch; no external source reproduced.",
+      "severity": "low",
+      "drug_class": "muscle_relaxant",
+      "symptoms": [
+        {
+          "symptom_code": "drowsiness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 3
+        },
+        {
+          "symptom_code": "dizziness",
+          "typical_onset_days_min": 1,
+          "typical_onset_days_max": 5
+        }
+      ]
+    }
+  ]
+}

@@ -30,14 +30,14 @@ Work proceeds phase by phase. After each phase: `npm run typecheck`, `npm run li
 
 ## Phase 3 — Core engines (`packages/core`)
 
-- [ ] Rule files + Zod schemas + generated JSON Schemas; rule loader
-- [ ] Timezone utilities (DST-safe)
-- [ ] Adherence engine
-- [ ] Flag engine (4 flag types, scoring, dedupe, upgrade, evidence)
-- [ ] Visit summary builder
-- [ ] Rules check-in builder + medication fingerprint
-- [ ] Wording guard
-- [ ] Unit tests, coverage ≥ 90%
+- [x] Rule files + Zod schemas + generated JSON Schemas; rule loader
+- [x] Timezone utilities (DST-safe)
+- [x] Adherence engine
+- [x] Flag engine (4 flag types, scoring, dedupe, upgrade, evidence)
+- [x] Visit summary builder
+- [x] Rules check-in builder + medication fingerprint
+- [x] Wording guard
+- [x] Unit tests, coverage ≥ 90%
 
 ## Phase 4 — Seed data
 
