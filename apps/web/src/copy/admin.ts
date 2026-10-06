@@ -179,6 +179,6 @@ export const adminCopy = {
   count: 'Count',
   reportTitle: 'MedWatch pilot report',
   reportFooter:
-    'Synthetic demo data. Flags are prompts for clinician review, not diagnoses or treatment advice.',
+    'Synthetic demo data. Flags are prompts for clinician review only; they are not medical advice.',
   period: (a: string, b: string) => `${a} – ${b}`,
 };
