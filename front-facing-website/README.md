@@ -1,6 +1,6 @@
-# MedWatch landing page
+# Amivo Health landing page
 
-A single static page (`index.html`, no build step) that says what MedWatch is, what it does and
+A single static page (`index.html`, no build step) that says what Amivo Health is, what it does and
 why. Open it in a browser to preview.
 
 **Host it on Vercel** as a second project from this repo: Root Directory `front-facing-website`,
