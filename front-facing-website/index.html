@@ -500,7 +500,7 @@
       .chat {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         gap: 0.5rem;
         font-size: 0.88rem;
         line-height: 1.4;
@@ -561,15 +561,16 @@
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 1.5rem;
-        align-items: center;
+        align-items: stretch;
       }
       .watch {
         display: grid;
         justify-items: center;
+        align-self: center;
       }
       .watch .strap {
-        width: 58px;
-        height: 26px;
+        width: 64px;
+        height: 34px;
         background: var(--teal-dark);
       }
       .watch .strap.top {
@@ -579,8 +580,8 @@
         border-radius: 4px 4px 10px 10px;
       }
       .watch .case {
-        width: 96px;
-        height: 112px;
+        width: 108px;
+        height: 126px;
         border-radius: 28px;
         background: #1d2a2b;
         padding: 6px;
@@ -619,6 +620,11 @@
         text-transform: uppercase;
         letter-spacing: 0.1em;
       }
+      .trend {
+        display: flex;
+        flex-direction: column;
+        padding-block: 0.25rem;
+      }
       .trend-head {
         display: flex;
         justify-content: space-between;
@@ -630,10 +636,11 @@
         font-weight: 500;
       }
       .sleep {
+        flex: 1;
+        min-height: 96px;
         display: flex;
         align-items: flex-end;
         gap: 6px;
-        height: 70px;
         position: relative;
         border-bottom: 1px dashed var(--line);
       }
@@ -682,6 +689,19 @@
         background: var(--teal-light);
         border-radius: 999px;
         padding: 0.35rem 0.8rem;
+      }
+
+      @media (min-width: 901px) {
+        /* line up heading, copy, picture and chips across both cards */
+        .soon-grid {
+          grid-template-rows: auto auto 1fr auto;
+        }
+        .soon {
+          display: grid;
+          grid-template-rows: subgrid;
+          grid-row: span 4;
+          row-gap: 0;
+        }
       }
 
       /* ---------- goal ---------- */
@@ -1128,7 +1148,7 @@
                 </div>
                 <div class="strap bottom"></div>
               </div>
-              <div>
+              <div class="trend">
                 <div class="trend-head">
                   <span>Sleep</span><span class="muted">Last 7 nights</span>
                 </div>
