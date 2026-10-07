@@ -463,7 +463,7 @@
       }
       .soon-grid {
         display: grid;
-        grid-template-columns: 1.45fr 1fr;
+        grid-template-columns: 1fr 1fr;
         gap: 1.25rem;
       }
       .soon {
@@ -471,9 +471,67 @@
         border: 1px solid var(--line);
         border-radius: var(--radius);
         padding: 1.75rem;
+        display: flex;
+        flex-direction: column;
+      }
+      .soon-head {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        margin-bottom: 0.9rem;
+      }
+      .soon-head .icon {
+        margin: 0;
+        flex: none;
+      }
+      .soon:nth-child(2) .icon {
+        background: var(--sand-light);
+        color: #8a5a14;
+      }
+      .visual {
+        flex: 1;
+        min-height: 230px;
+        margin-top: 1.5rem;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 1.2rem;
+        padding: 1.25rem;
+      }
+      .chat {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 0.88rem;
+        line-height: 1.4;
+      }
+      .chat-head {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding-bottom: 0.75rem;
+        margin-bottom: 0.25rem;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+      .chat-head strong {
+        display: block;
+        color: var(--ink);
+        font-size: 0.85rem;
+      }
+      .avatar {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--teal);
+        color: #fff;
+        font-weight: 700;
+        display: grid;
+        place-items: center;
       }
       .soon h3 {
-        margin: 0 0 0.5rem;
+        margin: 0;
         font-size: 1.3rem;
         letter-spacing: -0.02em;
         color: var(--teal-deep);
@@ -482,49 +540,28 @@
         margin: 0;
         color: var(--muted);
       }
-      .soon-text {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 1.75rem;
-        align-items: center;
-      }
-      .phone {
-        width: 190px;
-        background: var(--bg);
-        border: 1px solid var(--line);
-        border-radius: 1.4rem;
-        padding: 1rem 0.85rem;
-        display: grid;
-        gap: 0.5rem;
-        font-size: 0.85rem;
-        line-height: 1.35;
-      }
       .sms {
-        max-width: 88%;
+        max-width: 78%;
         padding: 0.55rem 0.8rem;
         border-radius: 1rem;
       }
       .sms.in {
+        align-self: flex-start;
         background: #fff;
         border: 1px solid var(--line);
         border-bottom-left-radius: 0.3rem;
       }
       .sms.out {
-        justify-self: end;
+        align-self: flex-end;
         background: var(--teal);
         color: #fff;
         border-bottom-right-radius: 0.3rem;
       }
       .wear {
-        margin-top: 1.5rem;
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 1.25rem;
+        gap: 1.5rem;
         align-items: center;
-        background: var(--bg);
-        border: 1px solid var(--line);
-        border-radius: 1.2rem;
-        padding: 1.1rem;
       }
       .watch {
         display: grid;
@@ -763,11 +800,14 @@
         }
       }
       @media (max-width: 520px) {
-        .soon-text {
-          grid-template-columns: 1fr;
+        .soon {
+          padding: 1.35rem;
         }
-        .phone {
-          width: 100%;
+        .wear {
+          gap: 1rem;
+        }
+        .visual {
+          min-height: 0;
         }
         .float {
           right: 0.75rem;
@@ -999,19 +1039,34 @@
           to the phone in everyone’s pocket and the watch on their wrist.
         </p>
         <div class="soon-grid">
-          <article class="soon soon-text">
-            <div>
-              <h3>Check-ins by text message</h3>
-              <p>
-                No app to open and no password to remember. A friendly text arrives at dose time and
-                a one-tap reply logs it. The daily symptom check-in works the same way, so staying
-                on track takes seconds, and a missed reply still reaches the care team. 95% of
-                adults 65 and older already carry a cellphone.<sup
-                  ><a href="#src-4" aria-label="Source 4">4</a></sup
+          <article class="soon">
+            <div class="soon-head">
+              <div class="icon" aria-hidden="true">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
                 >
-              </p>
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+              </div>
+              <h3>Check-ins by text message</h3>
             </div>
-            <div class="phone" aria-hidden="true">
+            <p>
+              No app and no password. A friendly text arrives at dose time, one tap logs it, and
+              symptom check-ins work the same way, on the cellphone 95% of adults 65 and older
+              already carry.<sup><a href="#src-4" aria-label="Source 4">4</a></sup>
+            </p>
+            <div class="visual chat" aria-hidden="true">
+              <div class="chat-head">
+                <span class="avatar">A</span>
+                <span><strong>Amivo Health</strong>Text message</span>
+              </div>
               <div class="sms in">
                 Hi Rose, it’s time for your 8 pm medicines. Reply 1 when taken.
               </div>
@@ -1019,15 +1074,35 @@
               <div class="sms in">Thanks! Any dizziness today? Reply Y or N.</div>
               <div class="sms out">N</div>
             </div>
+            <div class="metrics">
+              <span>Dose reminders</span><span>Symptom check-ins</span><span>Any cellphone</span>
+            </div>
           </article>
           <article class="soon">
-            <h3>Wearable device data</h3>
+            <div class="soon-head">
+              <div class="icon" aria-hidden="true">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="6" y="6" width="12" height="12" rx="3" />
+                  <path d="M9 6V3h6v3M9 18v3h6v-3M9.5 12h1.5l1-2 1.5 4 1-2h1" />
+                </svg>
+              </div>
+              <h3>Wearable device data</h3>
+            </div>
             <p>
-              Connect smartwatches and fitness trackers so changes in heart rate, sleep and daily
-              activity sit on the same timeline as medicine changes and check-ins, giving nurses
-              more to go on without asking anyone to do more.
+              Smartwatches and fitness trackers add heart rate, sleep and activity to the same
+              timeline as medicine changes, giving nurses more to go on without asking anyone to do
+              more.
             </p>
-            <div class="wear" aria-hidden="true">
+            <div class="visual wear" aria-hidden="true">
               <div class="watch">
                 <div class="strap top"></div>
                 <div class="case">
@@ -1067,7 +1142,7 @@
                 <div class="trend-note"><i></i>New medicine started</div>
               </div>
             </div>
-            <div class="metrics" aria-label="Signals we plan to support">
+            <div class="metrics">
               <span>Heart rate</span><span>Sleep</span><span>Steps</span><span>Falls</span>
             </div>
           </article>
