@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amivo Health — Medication safety for home health</title>
+    <meta
+      name="description"
+      content="Amivo Health helps home health agencies catch medication problems early, so older adults on many medicines stay safe at home."
+    />
+    <meta name="theme-color" content="#2F6F73" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232F6F73'/%3E%3Cpath d='M8 17h5l2-5 3 9 2-4h4' fill='none' stroke='%23FAF7F2' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --teal: #2f6f73;
+        --teal-dark: #24585b;
+        --teal-deep: #183f42;
+        --teal-light: #e3f0ef;
+        --sand: #d9a86c;
+        --sand-light: #f6eadb;
+        --bg: #faf7f2;
+        --surface: #ffffff;
+        --ink: #2b2b2b;
+        --muted: #5f5f5f;
+        --line: #e6e1d8;
+        --high: #b4483c;
+        --high-bg: #f7e4e1;
+        --high-text: #8c2f25;
+        --radius: 1.25rem;
+        --shadow: 0 1px 2px rgba(43, 43, 43, 0.04), 0 12px 32px -12px rgba(43, 43, 43, 0.18);
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        overflow-x: clip;
+      }
+      body {
+        margin: 0;
+        overflow-x: clip;
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+      }
+      :focus-visible {
+        outline: 3px solid var(--sand);
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+      .wrap {
+        width: min(1120px, 100% - 2.5rem);
+        margin-inline: auto;
+      }
+
+      /* ---------- nav ---------- */
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-block: 1.25rem;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-weight: 800;
+        font-size: 1.2rem;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+        color: var(--teal-deep);
+      }
+      .brand svg {
+        flex: none;
+      }
+      .nav-link {
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        color: var(--teal-dark);
+        padding: 0.6rem 1rem;
+        border-radius: 999px;
+        border: 1.5px solid rgba(47, 111, 115, 0.25);
+        transition: background 0.2s;
+      }
+      .nav-link:hover {
+        background: var(--teal-light);
+      }
+
+      /* ---------- hero ---------- */
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 3.5rem;
+        align-items: center;
+        padding-block: 3.5rem 5rem;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--teal-dark);
+        background: var(--teal-light);
+        padding: 0.4rem 0.85rem;
+        border-radius: 999px;
+      }
+      .eyebrow::before {
+        content: '';
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: var(--teal);
+      }
+      h1 {
+        font-size: clamp(2.3rem, 5.2vw, 3.9rem);
+        line-height: 1.05;
+        letter-spacing: -0.035em;
+        margin: 1.25rem 0 1.25rem;
+        color: var(--teal-deep);
+      }
+      h1 em {
+        font-style: normal;
+        background: linear-gradient(transparent 62%, var(--sand-light) 62%);
+      }
+      .lede {
+        font-size: clamp(1.05rem, 1.6vw, 1.22rem);
+        color: var(--muted);
+        max-width: 34rem;
+        margin: 0 0 2rem;
+      }
+      .ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-height: 48px;
+        padding: 0 1.4rem;
+        border-radius: 999px;
+        font-weight: 700;
+        text-decoration: none;
+        transition:
+          transform 0.2s,
+          background 0.2s,
+          box-shadow 0.2s;
+      }
+      .btn-primary {
+        background: var(--teal);
+        color: #fff;
+        box-shadow: 0 8px 20px -8px rgba(47, 111, 115, 0.6);
+      }
+      .btn-primary:hover {
+        background: var(--teal-dark);
+        transform: translateY(-1px);
+      }
+      .btn-ghost {
+        color: var(--teal-deep);
+        background: var(--surface);
+        border: 1.5px solid var(--line);
+      }
+      .btn-ghost:hover {
+        border-color: var(--teal);
+      }
+
+      /* product preview */
+      .preview {
+        position: relative;
+      }
+      .preview::before {
+        content: '';
+        position: absolute;
+        inset: -8% -6% -10% 4%;
+        background:
+          radial-gradient(circle at 30% 30%, rgba(217, 168, 108, 0.35), transparent 60%),
+          radial-gradient(circle at 75% 70%, rgba(47, 111, 115, 0.28), transparent 60%);
+        filter: blur(24px);
+        z-index: 0;
+      }
+      .panel {
+        position: relative;
+        z-index: 1;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 1.4rem;
+      }
+      .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+      .panel-title {
+        font-weight: 700;
+        font-size: 0.95rem;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(14, 1fr);
+        align-items: end;
+        gap: 4px;
+        height: 72px;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px dashed var(--line);
+      }
+      .timeline span {
+        border-radius: 4px 4px 2px 2px;
+        background: var(--teal);
+        opacity: 0.85;
+      }
+      .timeline span.miss {
+        background: var(--high);
+      }
+      .timeline span.mark {
+        outline: 2px solid var(--sand);
+        outline-offset: 2px;
+      }
+      .legend {
+        display: flex;
+        gap: 1rem;
+        margin: 0.6rem 0 1.1rem;
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+      .legend i {
+        display: inline-block;
+        width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 2px;
+        margin-right: 0.35rem;
+        vertical-align: -1px;
+      }
+      .flag {
+        border: 1px solid var(--line);
+        border-left: 6px solid var(--high);
+        border-radius: 0.9rem;
+        padding: 0.9rem 1rem;
+        background: #fffdfb;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--high-text);
+        background: var(--high-bg);
+        border: 1px solid var(--high);
+        border-radius: 999px;
+        padding: 0.1rem 0.55rem;
+      }
+      .flag h3 {
+        margin: 0.5rem 0 0.25rem;
+        font-size: 1rem;
+        letter-spacing: -0.01em;
+      }
+      .flag p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.75rem;
+      }
+      .chip {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+        background: var(--teal-light);
+        color: var(--teal-deep);
+      }
+      .float {
+        position: absolute;
+        z-index: 2;
+        right: -1.2rem;
+        bottom: -1.6rem;
+        background: var(--teal-deep);
+        color: #fff;
+        border-radius: 1rem;
+        padding: 0.8rem 1rem;
+        box-shadow: var(--shadow);
+        display: flex;
+        gap: 0.7rem;
+        align-items: center;
+        font-size: 0.85rem;
+      }
+      .float strong {
+        display: block;
+        font-size: 0.95rem;
+      }
+      .float .dot {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        background: var(--sand);
+        display: grid;
+        place-items: center;
+        color: var(--teal-deep);
+        flex: none;
+      }
+
+      /* ---------- what we do ---------- */
+      section h2 {
+        font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+        letter-spacing: -0.03em;
+        line-height: 1.15;
+        margin: 0 0 0.75rem;
+        color: var(--teal-deep);
+      }
+      .section-lede {
+        color: var(--muted);
+        max-width: 40rem;
+        margin: 0 0 2.25rem;
+        font-size: 1.05rem;
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+      }
+      .feature {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 1.6rem;
+        box-shadow: 0 1px 2px rgba(43, 43, 43, 0.04);
+        transition:
+          transform 0.25s,
+          box-shadow 0.25s;
+      }
+      .feature:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow);
+      }
+      .icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.9rem;
+        display: grid;
+        place-items: center;
+        background: var(--teal-light);
+        color: var(--teal);
+        margin-bottom: 1.1rem;
+      }
+      .feature:nth-child(2) .icon {
+        background: var(--sand-light);
+        color: #8a5a14;
+      }
+      .feature h3 {
+        margin: 0 0 0.4rem;
+        font-size: 1.15rem;
+        letter-spacing: -0.01em;
+      }
+      .feature p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      /* ---------- goal ---------- */
+      .goal {
+        margin-block: 5rem 4rem;
+        background: linear-gradient(135deg, var(--teal-deep), var(--teal));
+        color: #fff;
+        border-radius: calc(var(--radius) + 0.5rem);
+        padding: clamp(2rem, 5vw, 3.5rem);
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 2.5rem;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .goal::after {
+        content: '';
+        position: absolute;
+        width: 340px;
+        height: 340px;
+        right: -110px;
+        top: -140px;
+        border-radius: 50%;
+        background: rgba(217, 168, 108, 0.22);
+      }
+      .goal h2 {
+        color: #fff;
+      }
+      .goal .kicker {
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--sand);
+        margin: 0 0 0.75rem;
+      }
+      .goal p.copy {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 1.05rem;
+      }
+      .outcomes {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 0.85rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .outcomes li {
+        display: flex;
+        gap: 0.9rem;
+        align-items: flex-start;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 1rem;
+        padding: 1rem 1.1rem;
+      }
+      .outcomes strong {
+        display: block;
+        font-size: 1.05rem;
+      }
+      .outcomes span {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.92rem;
+      }
+      .check {
+        flex: none;
+        width: 1.8rem;
+        height: 1.8rem;
+        border-radius: 50%;
+        background: var(--sand);
+        color: var(--teal-deep);
+        display: grid;
+        place-items: center;
+        margin-top: 0.1rem;
+      }
+
+      /* ---------- footer ---------- */
+      footer {
+        border-top: 1px solid var(--line);
+        padding-block: 2rem 2.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      footer .brand {
+        font-size: 1rem;
+      }
+
+      /* ---------- responsive ---------- */
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+          padding-block: 1.5rem 4rem;
+        }
+        .preview {
+          max-width: 520px;
+        }
+        .features {
+          grid-template-columns: 1fr;
+        }
+        .goal {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 520px) {
+        .float {
+          right: 0.75rem;
+          bottom: -1.4rem;
+        }
+        .btn {
+          flex: 1 1 100%;
+        }
+        .nav-link {
+          padding: 0.5rem 0.85rem;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="wrap nav">
+      <a class="brand" href="#top" aria-label="Amivo Health home">
+        <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="9" fill="#2F6F73" />
+          <path
+            d="M8 17h5l2-5 3 9 2-4h4"
+            fill="none"
+            stroke="#FAF7F2"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        Amivo Health
+      </a>
+      <a class="nav-link" href="#goal">Our goal</a>
+    </header>
+
+    <main id="top">
+      <section class="wrap hero" aria-labelledby="hero-title">
+        <div>
+          <span class="eyebrow">Medication safety for home health</span>
+          <h1 id="hero-title">
+            Catch medication problems <em>before</em> they become hospital visits.
+          </h1>
+          <p class="lede">
+            Amivo Health helps home health agencies keep older adults on many medicines safe at
+            home. It connects every medicine change, every dose and a 30-second daily check-in, and
+            brings the patterns that matter to a nurse’s attention early.
+          </p>
+          <div class="ctas">
+            <a class="btn btn-primary" href="#what">See what we do</a>
+            <a class="btn btn-ghost" href="#goal">Our goal</a>
+          </div>
+        </div>
+
+        <div class="preview" aria-hidden="true">
+          <div class="panel">
+            <div class="panel-head">
+              <span class="panel-title">Doses this fortnight</span>
+              <span class="muted">Reported</span>
+            </div>
+            <div class="timeline">
+              <span style="height: 92%"></span><span style="height: 88%"></span
+              ><span style="height: 95%"></span><span style="height: 90%"></span
+              ><span class="miss" style="height: 40%"></span><span style="height: 93%"></span
+              ><span style="height: 96%"></span><span style="height: 91%"></span
+              ><span class="mark" style="height: 94%"></span><span style="height: 97%"></span
+              ><span style="height: 90%"></span><span style="height: 95%"></span
+              ><span style="height: 92%"></span><span style="height: 98%"></span>
+            </div>
+            <div class="legend">
+              <span><i style="background: var(--teal)"></i>Taken</span>
+              <span><i style="background: var(--high)"></i>Missed</span>
+              <span><i style="background: var(--sand)"></i>New medicine</span>
+            </div>
+            <div class="flag">
+              <span class="badge">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                >
+                  <path d="M12 8v5M12 16h.01" />
+                </svg>
+                High
+              </span>
+              <h3>Dizziness began 3 days after a new sleep medicine</h3>
+              <p>Doses were reported taken 6 of 6 times. For clinician review.</p>
+              <div class="chip-row">
+                <span class="chip">Medicine change</span>
+                <span class="chip">Daily check-in</span>
+                <span class="chip">Dose history</span>
+              </div>
+            </div>
+          </div>
+          <div class="float">
+            <span class="dot">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </span>
+            <div><strong>Routed to the nurse</strong>Reviewed in minutes</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="what" class="wrap" aria-labelledby="what-title">
+        <h2 id="what-title">What Amivo Health does</h2>
+        <p class="section-lede">
+          One calm place for clients, families and nurses, built for people who take many medicines.
+        </p>
+        <div class="features">
+          <article class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z" />
+                <path d="m8.5 8.5 7 7" />
+              </svg>
+            </div>
+            <h3>Tracks every medicine</h3>
+            <p>Each start, stop and dose change, plus every scheduled dose and who confirmed it.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"
+                />
+              </svg>
+            </div>
+            <h3>Asks how they feel</h3>
+            <p>A 30-second daily check-in, tailored to the medicines each person actually takes.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+              </svg>
+            </div>
+            <h3>Flags what matters</h3>
+            <p>
+              Notices when a new symptom follows a medicine change and explains why, for a nurse to
+              review.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="goal" class="wrap goal" aria-labelledby="goal-title">
+        <div style="position: relative; z-index: 1">
+          <p class="kicker">Our goal</p>
+          <h2 id="goal-title">Safer days at home, and fewer trips back to the hospital.</h2>
+          <p class="copy">
+            Side effects from medicines are a common reason older adults end up back in the
+            hospital. We want home health teams to see the warning signs days sooner, without adding
+            work.
+          </p>
+        </div>
+        <ul class="outcomes">
+          <li>
+            <span class="check" aria-hidden="true"
+              ><svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" /></svg
+            ></span>
+            <div>
+              <strong>Fewer rehospitalizations</strong
+              ><span>Spot trouble early, while it is still simple to address.</span>
+            </div>
+          </li>
+          <li>
+            <span class="check" aria-hidden="true"
+              ><svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" /></svg
+            ></span>
+            <div>
+              <strong>Time back for nurses</strong
+              ><span>A clear list of who needs attention today, and a one-page visit summary.</span>
+            </div>
+          </li>
+          <li>
+            <span class="check" aria-hidden="true"
+              ><svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" /></svg
+            ></span>
+            <div>
+              <strong>Peace of mind for families</strong
+              ><span>Caregivers confirm doses and hear about missed ones right away.</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="wrap">
+      <a class="brand" href="#top">
+        <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="9" fill="#2F6F73" />
+          <path
+            d="M8 17h5l2-5 3 9 2-4h4"
+            fill="none"
+            stroke="#FAF7F2"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        Amivo Health
+      </a>
+      <span>Flags are prompts for clinician review, not medical advice. © 2026 Amivo Health</span>
+    </footer>
+  </body>
+</html>
