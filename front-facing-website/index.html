@@ -393,6 +393,143 @@
         color: var(--muted);
       }
 
+      /* ---------- why it matters ---------- */
+      .why {
+        padding-block: 0 4.5rem;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+      }
+      .stat {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 1.6rem;
+        border-top: 4px solid var(--sand);
+      }
+      .stat:nth-child(2) {
+        border-top-color: var(--high);
+      }
+      .stat:nth-child(3) {
+        border-top-color: var(--teal);
+      }
+      .stat strong {
+        display: block;
+        font-size: clamp(2.4rem, 5vw, 3.2rem);
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: var(--teal-deep);
+        margin-bottom: 0.6rem;
+      }
+      .stat p {
+        margin: 0;
+        color: var(--muted);
+      }
+      .stat sup a,
+      .soon sup a {
+        color: var(--teal);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .sources {
+        margin: -1.5rem auto 2.5rem;
+        padding-left: 1.1rem;
+        color: var(--muted);
+        font-size: 0.8rem;
+        display: grid;
+        gap: 0.2rem;
+      }
+      .sources a {
+        color: var(--muted);
+      }
+
+      /* ---------- coming next ---------- */
+      .next {
+        padding-block: 5rem 0;
+      }
+      .tag {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #8a5a14;
+        background: var(--sand-light);
+        border-radius: 999px;
+        padding: 0.3rem 0.7rem;
+        margin-bottom: 1rem;
+      }
+      .soon-grid {
+        display: grid;
+        grid-template-columns: 1.45fr 1fr;
+        gap: 1.25rem;
+      }
+      .soon {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 1.75rem;
+      }
+      .soon h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.3rem;
+        letter-spacing: -0.02em;
+        color: var(--teal-deep);
+      }
+      .soon p {
+        margin: 0;
+        color: var(--muted);
+      }
+      .soon-text {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 1.75rem;
+        align-items: center;
+      }
+      .phone {
+        width: 190px;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 1.4rem;
+        padding: 1rem 0.85rem;
+        display: grid;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        line-height: 1.35;
+      }
+      .sms {
+        max-width: 88%;
+        padding: 0.55rem 0.8rem;
+        border-radius: 1rem;
+      }
+      .sms.in {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-bottom-left-radius: 0.3rem;
+      }
+      .sms.out {
+        justify-self: end;
+        background: var(--teal);
+        color: #fff;
+        border-bottom-right-radius: 0.3rem;
+      }
+      .metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1.25rem;
+      }
+      .metrics span {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--teal-dark);
+        background: var(--teal-light);
+        border-radius: 999px;
+        padding: 0.35rem 0.8rem;
+      }
+
       /* ---------- goal ---------- */
       .goal {
         margin-block: 5rem 4rem;
@@ -489,6 +626,10 @@
 
       /* ---------- responsive ---------- */
       @media (max-width: 900px) {
+        .stats,
+        .soon-grid {
+          grid-template-columns: 1fr;
+        }
         .hero {
           grid-template-columns: 1fr;
           gap: 3rem;
@@ -505,6 +646,12 @@
         }
       }
       @media (max-width: 520px) {
+        .soon-text {
+          grid-template-columns: 1fr;
+        }
+        .phone {
+          width: 100%;
+        }
         .float {
           right: 0.75rem;
           bottom: -1.4rem;
@@ -624,6 +771,39 @@
         </div>
       </section>
 
+      <section id="why" class="wrap why" aria-labelledby="why-title">
+        <h2 id="why-title">More medicines, more chances for something to go wrong.</h2>
+        <p class="section-lede">
+          Older adults take more medicines than anyone, and most of the risk plays out at home,
+          between visits, where nobody is watching closely.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <strong>43%</strong>
+            <p>
+              of adults 65 and older take five or more prescription medicines.<sup
+                ><a href="#src-1" aria-label="Source 1">1</a></sup
+              >
+            </p>
+          </div>
+          <div class="stat">
+            <strong>600K+</strong>
+            <p>
+              emergency room visits each year by adults 65 and older are caused by harm from
+              medicines.<sup><a href="#src-2" aria-label="Source 2">2</a></sup>
+            </p>
+          </div>
+          <div class="stat">
+            <strong>~50%</strong>
+            <p>
+              of medicines for long-term conditions are not taken as prescribed.<sup
+                ><a href="#src-3" aria-label="Source 3">3</a></sup
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section id="what" class="wrap" aria-labelledby="what-title">
         <h2 id="what-title">What Amivo Health does</h2>
         <p class="section-lede">
@@ -690,6 +870,49 @@
               Notices when a new symptom follows a medicine change and explains why, for a nurse to
               review.
             </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="next" class="wrap next" aria-labelledby="next-title">
+        <span class="tag">Coming next</span>
+        <h2 id="next-title">Meeting people where they already are.</h2>
+        <p class="section-lede">
+          The best safety check is the one that actually gets done. Next, we are bringing check-ins
+          to the phone in everyone’s pocket and the watch on their wrist.
+        </p>
+        <div class="soon-grid">
+          <article class="soon soon-text">
+            <div>
+              <h3>Check-ins by text message</h3>
+              <p>
+                No app to open and no password to remember. A friendly text arrives at dose time and
+                a one-tap reply logs it. The daily symptom check-in works the same way, so staying
+                on track takes seconds, and a missed reply still reaches the care team. 95% of
+                adults 65 and older already carry a cellphone.<sup
+                  ><a href="#src-4" aria-label="Source 4">4</a></sup
+                >
+              </p>
+            </div>
+            <div class="phone" aria-hidden="true">
+              <div class="sms in">
+                Hi Rose, it’s time for your 8 pm medicines. Reply 1 when taken.
+              </div>
+              <div class="sms out">1</div>
+              <div class="sms in">Thanks! Any dizziness today? Reply Y or N.</div>
+              <div class="sms out">N</div>
+            </div>
+          </article>
+          <article class="soon">
+            <h3>Wearable device data</h3>
+            <p>
+              Connect smartwatches and fitness trackers so changes in heart rate, sleep and daily
+              activity sit on the same timeline as medicine changes and check-ins, giving nurses
+              more to go on without asking anyone to do more.
+            </p>
+            <div class="metrics" aria-label="Signals we plan to support">
+              <span>Heart rate</span><span>Sleep</span><span>Steps</span><span>Falls</span>
+            </div>
           </article>
         </div>
       </section>
@@ -764,6 +987,33 @@
           </li>
         </ul>
       </section>
+      <ol class="sources wrap" aria-label="Sources">
+        <li id="src-1">
+          CDC, National Center for Health Statistics,
+          <a href="https://www.cdc.gov/nchs/hus/topics/rx-drug-use.htm"
+            >Health, United States: Prescription drug use</a
+          >
+          (2017–March 2020).
+        </li>
+        <li id="src-2">
+          CDC,
+          <a href="https://www.cdc.gov/medication-safety/data-research/facts-stats/index.html"
+            >Medication Safety Data</a
+          >.
+        </li>
+        <li id="src-3">
+          Viswanathan M, et al.
+          <a href="https://www.acpjournals.org/doi/10.7326/0003-4819-157-11-201212040-00538"
+            >Interventions to improve adherence to self-administered medications for chronic
+            diseases</a
+          >. Annals of Internal Medicine, 2012.
+        </li>
+        <li id="src-4">
+          Pew Research Center,
+          <a href="https://www.pewresearch.org/internet/fact-sheet/mobile/">Mobile Fact Sheet</a>
+          (2025).
+        </li>
+      </ol>
     </main>
 
     <footer class="wrap">
